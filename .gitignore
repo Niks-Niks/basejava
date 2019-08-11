@@ -1,5 +1,9 @@
 out
 .git
 lib
+<<<<<<< HEAD
 IJ_Project.iml
 .idea
+=======
+.idea
+>>>>>>> e1c13b19aaa198bcfbc7ca5405d47e6a7f825793
