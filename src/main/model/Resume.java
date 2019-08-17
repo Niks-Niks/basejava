@@ -2,6 +2,7 @@ package main.model;
 
 import java.util.EnumMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -14,8 +15,8 @@ public class Resume implements Comparable<Resume> {
 
     private String fullName;
 
-    Map<ContactType, String> mapContact = new EnumMap<>(ContactType.class);
-    Map<SectionType, String> mapSection = new EnumMap<>(SectionType.class);
+    Map<ContactType, String> Contacts = new EnumMap<>(ContactType.class);
+    Map<SectionType, String> Sections = new EnumMap<>(SectionType.class);
 
     public Resume(String fullName) {
         this(UUID.randomUUID().toString(), fullName);
@@ -26,12 +27,20 @@ public class Resume implements Comparable<Resume> {
         this.fullName = fullName;
     }
 
-    public String getContact(ContactType type){
-        return mapContact.get(type);
+    public String getContact(ContactType type) {
+        return Contacts.get(type);
     }
 
-    public String getSection(SectionType type){
-        return mapSection.get(type);
+    public String getSection(SectionType type) {
+        return Sections.get(type);
+    }
+
+    public void addContact(ContactType type, String value) {
+        Contacts.put(type, value);
+    }
+
+    public void addSection(SectionType type, String value) {
+        Sections.put(type, value);
     }
 
     public String getUuid() {
@@ -46,28 +55,25 @@ public class Resume implements Comparable<Resume> {
         return fullName;
     }
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Resume resume = (Resume) o;
+        return Objects.equals(uuid, resume.uuid) &&
+                Objects.equals(fullName, resume.fullName) &&
+                Objects.equals(Contacts, resume.Contacts) &&
+                Objects.equals(Sections, resume.Sections);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(uuid, fullName, Contacts, Sections);
     }
 
     @Override
     public String toString() {
         return uuid;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Resume resume = (Resume) o;
-
-        return uuid.equals(resume.uuid);
-    }
-
-    @Override
-    public int hashCode() {
-        return uuid.hashCode();
     }
 
     @Override
