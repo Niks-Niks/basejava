@@ -1,17 +1,29 @@
 package main.model;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
 public class OrganizationSection extends AbstractSection {
-    private List<String> list;
+    private List<Organization> list;
 
-    private OrganizationSection(List<String> list) {
-        this.list = list;
+    public OrganizationSection(Organization list){
+        this(Arrays.asList(list));
     }
 
-    public List getList(){
+    public OrganizationSection(List<Organization> list) {
+        this.list = list;
+    }
+    
+    public List<Organization> getList() {
         return list;
+    }
+
+    @Override
+    public String toString() {
+        return "OrganizationSection{" +
+                "list=" + list +
+                '}';
     }
 
     @Override
