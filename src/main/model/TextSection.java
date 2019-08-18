@@ -7,11 +7,18 @@ public class TextSection extends AbstractSection {
     private String text;
 
     public TextSection(String title) {
-        this.text = text;
+        this.text = title;
     }
 
-    public String getSection() {
+    public String getText() {
         return text;
+    }
+
+    @Override
+    public String toString() {
+        return "TextSection{" +
+                "text='" + text + '\'' +
+                '}';
     }
 
     @Override
