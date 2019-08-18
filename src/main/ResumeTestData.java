@@ -1,18 +1,27 @@
 package main;
 
-import main.model.ContactType;
-import main.model.Resume;
-import main.model.SectionType;
+import main.model.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ResumeTestData {
     public static void main(String[] args) {
         Resume resume = new Resume("Name");
+        String textForTextSection = "This new text special for textSection.";
+        
+        List listForListSection = new ArrayList<>();
+        listForListSection.add(textForTextSection);
+        listForListSection.add(textForTextSection);
+        
+        TextSection text = new TextSection(textForTextSection);
+        ListSection list = new ListSection(listForListSection);
 
-        for(SectionType type : SectionType.values()){
+        for (SectionType type : SectionType.values()) {
             System.out.println(type.getTitle());
         }
         System.out.println();
-        for(ContactType type : ContactType.values()){
+        for (ContactType type : ContactType.values()) {
             System.out.println(type.getTitle());
         }
 
@@ -30,15 +39,21 @@ public class ResumeTestData {
 
         outContact(resume);
         outSection(resume);
+
+        System.out.println("Just text->" + text.getText());
+        for (Object List : list.getList()) {
+            System.out.println("In list->" + List);
+        }
+
     }
 
-    private static void outContact(Resume resume){
+    private static void outContact(Resume resume) {
         for (ContactType type : ContactType.values()) {
             System.out.println(resume.getContact(type));
         }
     }
 
-    private static void outSection(Resume resume){
+    private static void outSection(Resume resume) {
         for (SectionType type : SectionType.values()) {
             System.out.println(resume.getSection(type));
         }
