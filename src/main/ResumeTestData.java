@@ -2,6 +2,7 @@ package main;
 
 import main.model.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,13 +10,10 @@ public class ResumeTestData {
     public static void main(String[] args) {
         Resume resume = new Resume("Name");
         String textForTextSection = "This new text special for textSection.";
-        
-        List listForListSection = new ArrayList<>();
+
+        List<String> listForListSection = new ArrayList<>();
         listForListSection.add(textForTextSection);
         listForListSection.add(textForTextSection);
-        
-        TextSection text = new TextSection(textForTextSection);
-        ListSection list = new ListSection(listForListSection);
 
         for (SectionType type : SectionType.values()) {
             System.out.println(type.getTitle());
@@ -31,20 +29,15 @@ public class ResumeTestData {
         resume.addContact(ContactType.SKYPE, "skype");
         resume.addContact(ContactType.TELEPHONE, "tel");
 
-        resume.addSection(SectionType.PERSONAL, "I'm");
-        resume.addSection(SectionType.ACHIEVEMENT, "is");
-        resume.addSection(SectionType.EDUCATION, "you");
-        resume.addSection(SectionType.OBJECTIVE, "are");
-        resume.addSection(SectionType.QUALIFICATIONS, ".");
+        resume.addSection(SectionType.PERSONAL, new TextSection("I'm okey"));
+        resume.addSection(SectionType.ACHIEVEMENT, new ListSection(listForListSection));
+        resume.addSection(SectionType.EDUCATION, new OrganizationSection(new Organization("Title", LocalDate.of(2019, 8, 18), LocalDate.of(2020, 8, 18), "description")));
+        resume.addSection(SectionType.OBJECTIVE, new TextSection("first is first"));
+        resume.addSection(SectionType.QUALIFICATIONS, new ListSection(listForListSection));
+        resume.addSection(SectionType.EXPERIENCE, new OrganizationSection(new Organization("Title", LocalDate.of(2019, 8, 18), LocalDate.of(2020, 8, 18), "description")));
 
         outContact(resume);
         outSection(resume);
-
-        System.out.println("Just text->" + text.getText());
-        for (Object List : list.getList()) {
-            System.out.println("In list->" + List);
-        }
-
     }
 
     private static void outContact(Resume resume) {
@@ -55,7 +48,7 @@ public class ResumeTestData {
 
     private static void outSection(Resume resume) {
         for (SectionType type : SectionType.values()) {
-            System.out.println(resume.getSection(type));
+            System.out.println(resume.getSection(type).toString());
         }
     }
 }
