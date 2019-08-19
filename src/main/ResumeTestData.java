@@ -31,10 +31,14 @@ public class ResumeTestData {
 
         resume.addSection(SectionType.PERSONAL, new TextSection("I'm okey"));
         resume.addSection(SectionType.ACHIEVEMENT, new ListSection(listForListSection));
-        resume.addSection(SectionType.EDUCATION, new OrganizationSection(new Organization("Title", LocalDate.of(2019, 8, 18), LocalDate.of(2020, 8, 18), "description")));
+        resume.addSection(SectionType.EDUCATION, new OrganizationSection(new Organization("Title",
+                new Organization.OrganizationDate(LocalDate.of(2019, 8, 18), LocalDate.of(2020, 8, 18), "description"),
+                new Organization.OrganizationDate(LocalDate.of(2019, 8, 18), LocalDate.of(2020, 8, 18), "description"))));
         resume.addSection(SectionType.OBJECTIVE, new TextSection("first is first"));
         resume.addSection(SectionType.QUALIFICATIONS, new ListSection(listForListSection));
-        resume.addSection(SectionType.EXPERIENCE, new OrganizationSection(new Organization("Title", LocalDate.of(2019, 8, 18), LocalDate.of(2020, 8, 18), "description")));
+        resume.addSection(SectionType.EXPERIENCE, new OrganizationSection(new Organization("Title",
+                new Organization.OrganizationDate(LocalDate.of(2019, 8, 18), LocalDate.of(2020, 8, 18), "description"),
+                new Organization.OrganizationDate(LocalDate.of(2019, 8, 18), LocalDate.of(2020, 8, 18), "description"))));
 
         outContact(resume);
         outSection(resume);
