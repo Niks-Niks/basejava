@@ -29,7 +29,7 @@ public abstract class AbstractStorage<SK> implements Storage {
     @Override
     public Resume get(String uuid) {
         SK searchKey = getExistSearchKey(uuid);
-        return getStorage(searchKey);
+        return getFromStorage(searchKey);
     }
 
     private SK getExistSearchKey(String uuid) {
@@ -65,7 +65,7 @@ public abstract class AbstractStorage<SK> implements Storage {
 
     protected abstract void deleteFromStorage(SK searchKey);
 
-    protected abstract Resume getStorage(SK searchKey);
+    protected abstract Resume getFromStorage(SK searchKey);
 
     protected abstract SK getSearchKey(String uuid);
 

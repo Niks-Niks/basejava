@@ -24,16 +24,6 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
         this.directory = directory;
     }
 
-    private void getFileRecursive() {
-        File file = new File("/src/main");
-        if (file.isDirectory()) {
-            for (String out : file.list()) {
-                //output in ???
-            }
-        }
-    }
-
-
     @Override
     protected List<Resume> copyAllSorted() {
         List<Resume> list = new ArrayList<>();
@@ -74,11 +64,15 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     @Override
     protected void deleteFromStorage(File file) {
-        file.delete();
+        if (file == null){
+            throw new StorageException("Nothing to delete", "Error deleteFromFile");
+        } else {
+            file.delete();
+        }
     }
 
     @Override
-    protected Resume getStorage(File file) {
+    protected Resume getFromStorage(File file) {
         Resume resume;
         try {
             resume = doRead(file);
@@ -100,7 +94,11 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     @Override
     public int size() {
-        return directory.list().length;
+        if (directory.list() == null) {
+            throw new StorageException("Size == null", "Error size(File)");
+        } else {
+            return directory.list().length;
+        }
     }
 
     protected abstract void doWrite(Resume resume, File file) throws IOException;

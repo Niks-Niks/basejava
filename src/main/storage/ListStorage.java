@@ -20,7 +20,7 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected Resume getStorage(Object searchKey) {
+    protected Resume getFromStorage(Object searchKey) {
         return storageList.get((Integer) searchKey);
     }
 

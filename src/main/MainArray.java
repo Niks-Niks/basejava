@@ -1,10 +1,11 @@
 package main;
 
+import main.model.Resume;
+import main.storage.ArrayStorage;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import main.model.Resume;
-import main.storage.ArrayStorage;
 
 /**
  * Interactive test for ArrayStorage implementation
@@ -65,12 +66,12 @@ public class MainArray {
     }
 
     static void printAll() {
-        Resume[] all = ARRAY_STORAGE.getAllSorted().toArray(new Resume[0]);
+        Object[] all = ARRAY_STORAGE.getAllSorted().toArray(new Resume[0]);
         System.out.println("----------------------------");
         if (all.length == 0) {
             System.out.println("Empty");
         } else {
-            for (Resume resume : all) {
+            for (Object resume : all) {
                 System.out.println(resume);
             }
         }

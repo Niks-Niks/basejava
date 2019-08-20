@@ -1,7 +1,6 @@
 package main.model;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -9,15 +8,17 @@ import java.util.Objects;
 public class Organization {
 
     private String title;
-    private List<OrganizationDate> list = new ArrayList<>();
+    private List<Place> list;
+    private Link name;
 
-    public Organization(String title, List<OrganizationDate> data) {
+    public Organization(String title, List<Place> data) {
         this.title = title;
         list = data;
     }
 
-    public Organization(String title, OrganizationDate... data) {
+    public Organization(String title, Link name, Place... data) {
         this.title = title;
+        this.name = name;
         list = Arrays.asList(data);
     }
 
@@ -36,16 +37,46 @@ public class Organization {
 
     @Override
     public String toString() {
-        return "Organization ( " + title + " " + list + ')';
+        return "( " + title + ", " + name + ", " + list + ')';
     }
 
-    public static class OrganizationDate {
+    public static class Link {
+
+        private String link;
+        private String name;
+
+        public Link(String link, String name) {
+            this.link = link;
+            this.name = name;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Link link1 = (Link) o;
+            return Objects.equals(link, link1.link) &&
+                    Objects.equals(name, link1.name);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(link, name);
+        }
+
+        @Override
+        public String toString() {
+            return "link->( " + link + ", " + name + " )";
+        }
+    }
+
+    public static class Place {
 
         private LocalDate dateStart;
         private LocalDate dateEnd;
         private String description;
 
-        public OrganizationDate(LocalDate date, LocalDate dateEnd, String description) {
+        public Place(LocalDate date, LocalDate dateEnd, String description) {
             this.dateStart = date;
             this.dateEnd = dateEnd;
             this.description = description;
@@ -55,7 +86,7 @@ public class Organization {
         public boolean equals(Object o) {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
-            OrganizationDate that = (OrganizationDate) o;
+            Place that = (Place) o;
             return Objects.equals(dateStart, that.dateStart) &&
                     Objects.equals(dateEnd, that.dateEnd) &&
                     Objects.equals(description, that.description);
@@ -68,11 +99,7 @@ public class Organization {
 
         @Override
         public String toString() {
-            return "OrganizationDate{" +
-                    "dateStart=" + dateStart +
-                    ", dateEnd=" + dateEnd +
-                    ", description='" + description + '\'' +
-                    '}';
+            return "Place-> (" + dateStart + ", " + dateEnd + ", " + description + " )";
         }
     }
 }

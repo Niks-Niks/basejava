@@ -42,7 +42,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    public Resume getStorage(Object index) {
+    public Resume getFromStorage(Object index) {
         return storage[(int) index];
     }
 
