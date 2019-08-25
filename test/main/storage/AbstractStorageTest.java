@@ -7,12 +7,15 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
 public class AbstractStorageTest {
 
     protected Storage storage;
+
+    protected static final File STORAGE_DIRECTORY = new File("./src/main/uuid");
 
     private static final String UUID_1 = "uuid1";
     private static final Resume RESUME_1 = new Resume(UUID_1, "fullName");
@@ -29,6 +32,7 @@ public class AbstractStorageTest {
     protected AbstractStorageTest(Storage storage) {
         this.storage = storage;
     }
+
 
     @Before
     public void setUp() throws Exception {

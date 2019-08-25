@@ -3,13 +3,17 @@ package main;
 import main.model.Resume;
 import main.storage.*;
 
+import java.io.File;
+import java.io.IOException;
+
 /**
  * Test for your ArrayStorage implementation
  */
 public class MainTestArrayStorage {
-    static final AbstractStorage ARRAY_STORAGE = new SortedArrayStorage();
+    private static File path = new File("./src/main/uuid");
+    static final AbstractStorage ARRAY_STORAGE = new PathStorage(path.getAbsolutePath(), new ObjectStorage());
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         Resume resume1 = new Resume("fullName");
         resume1.setUuid("uuid1");
         Resume resume2 = new Resume("fullName");
@@ -17,6 +21,7 @@ public class MainTestArrayStorage {
         Resume resume3 = new Resume("fullName");
         resume3.setUuid("uuid3");
 
+        ARRAY_STORAGE.clear();
         ARRAY_STORAGE.save(resume1);
         ARRAY_STORAGE.save(resume2);
         ARRAY_STORAGE.save(resume3);
@@ -38,7 +43,7 @@ public class MainTestArrayStorage {
         System.out.println("Size: " + ARRAY_STORAGE.size());
     }
 
-    static void printAll() {
+    static void printAll() throws IOException {
         System.out.println("\nGet All");
         for (Object r : ARRAY_STORAGE.getAllSorted()) {
             System.out.println(r);

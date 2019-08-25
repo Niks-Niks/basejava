@@ -65,7 +65,7 @@ public class MainArray {
         }
     }
 
-    static void printAll() {
+    static void printAll() throws IOException {
         Object[] all = ARRAY_STORAGE.getAllSorted().toArray(new Resume[0]);
         System.out.println("----------------------------");
         if (all.length == 0) {
