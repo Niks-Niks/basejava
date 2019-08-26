@@ -1,14 +1,13 @@
 package main.model;
 
-import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-public class OrganizationSection extends AbstractSection implements Serializable {
+public class OrganizationSection extends AbstractSection {
     private List<Organization> list;
 
-//    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
     public OrganizationSection(Organization list){
         this(Arrays.asList(list));

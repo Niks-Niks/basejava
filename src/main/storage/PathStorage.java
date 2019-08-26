@@ -15,10 +15,10 @@ import java.util.stream.Collectors;
 
 public class PathStorage extends AbstractStorage<Path> {
     private Path directory;
-    private ObjectStorage objectStorage;
+    private SerializationStrategy SerializationStrategy;
 
-    public PathStorage(String directory, ObjectStorage objectStorage) {
-        this.objectStorage = objectStorage;
+    public PathStorage(String directory, SerializationStrategy SerializationStrategy) {
+        this.SerializationStrategy = SerializationStrategy;
         Objects.requireNonNull(directory, "directory must not be null");
         this.directory = Paths.get(directory);
         if (!Files.isDirectory(this.directory) || !Files.isWritable(this.directory)) {
@@ -61,7 +61,7 @@ public class PathStorage extends AbstractStorage<Path> {
     @Override
     protected void updateToStorage(Path searchPath, Resume resume) {
         try {
-            objectStorage.doWrite(resume, new BufferedOutputStream(Files.newOutputStream(searchPath)));
+            SerializationStrategy.doWrite(resume, new BufferedOutputStream(Files.newOutputStream(searchPath)));
         } catch (IOException e) {
             throw new StorageException("Path update error", searchPath.toAbsolutePath().toString(), e);
         }
@@ -89,7 +89,7 @@ public class PathStorage extends AbstractStorage<Path> {
     @Override
     protected Resume getFromStorage(Path searchPath) {
         try {
-            return objectStorage.doRead(new BufferedInputStream(Files.newInputStream(searchPath)));
+            return SerializationStrategy.doRead(new BufferedInputStream(Files.newInputStream(searchPath)));
         } catch (IOException e) {
             throw new StorageException("Path get error", searchPath.toAbsolutePath().toString(), e);
         }

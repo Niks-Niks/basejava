@@ -15,7 +15,7 @@ public class AbstractStorageTest {
 
     protected Storage storage;
 
-    protected static final File STORAGE_DIRECTORY = new File("./src/main/uuid");
+    protected static final File STORAGE_DIRECTORY = new File("./uuid");
 
     private static final String UUID_1 = "uuid1";
     private static final Resume RESUME_1 = new Resume(UUID_1, "fullName");

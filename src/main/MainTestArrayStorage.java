@@ -11,7 +11,7 @@ import java.io.IOException;
  */
 public class MainTestArrayStorage {
     private static File path = new File("./src/main/uuid");
-    static final AbstractStorage ARRAY_STORAGE = new PathStorage(path.getAbsolutePath(), new ObjectStorage());
+    static final AbstractStorage ARRAY_STORAGE = new PathStorage(path.getAbsolutePath(), new SerializationStrategy());
 
     public static void main(String[] args) throws IOException {
         Resume resume1 = new Resume("fullName");

@@ -8,20 +8,12 @@ import java.util.Objects;
 
 public class Organization implements Serializable {
 
-    private String title;
     private List<Place> list;
-    private Link name;
+    private Link homePage;
+    private static final long serialVersionUID = 1L;
 
-//    private static final long serialVersionUID = 1L;
-
-    public Organization(String title, List<Place> data) {
-        this.title = title;
-        list = data;
-    }
-
-    public Organization(String title, Link name, Place... data) {
-        this.title = title;
-        this.name = name;
+    public Organization(Link link, Place... data) {
+        homePage = link;
         list = Arrays.asList(data);
     }
 
@@ -30,27 +22,28 @@ public class Organization implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Organization that = (Organization) o;
-        return Objects.equals(title, that.title);
+        return Objects.equals(list, that.list) &&
+                Objects.equals(homePage, that.homePage);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(title);
+        return Objects.hash(list, homePage);
     }
 
     @Override
     public String toString() {
-        return "( " + title + ", " + name + ", " + list + ')';
+        return "( " + homePage + ", " + list + ')';
     }
 
-    public static class Link {
+    public static class Link implements Serializable {
 
         private String link;
-        private String name;
+        private String homePage;
 
-        public Link(String link, String name) {
+        public Link(String link, String homePage) {
             this.link = link;
-            this.name = name;
+            this.homePage = homePage;
         }
 
         @Override
@@ -59,27 +52,29 @@ public class Organization implements Serializable {
             if (o == null || getClass() != o.getClass()) return false;
             Link link1 = (Link) o;
             return Objects.equals(link, link1.link) &&
-                    Objects.equals(name, link1.name);
+                    Objects.equals(homePage, link1.homePage);
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(link, name);
+            return Objects.hash(link, homePage);
         }
 
         @Override
         public String toString() {
-            return "link->( " + link + ", " + name + " )";
+            return "link->( " + link + ", " + homePage + " )";
         }
     }
 
-    public static class Place {
+    public static class Place implements Serializable{
 
+        private String title;
         private LocalDate dateStart;
         private LocalDate dateEnd;
         private String description;
 
-        public Place(LocalDate date, LocalDate dateEnd, String description) {
+        public Place(String title, LocalDate date, LocalDate dateEnd, String description) {
+            this.title = title;
             this.dateStart = date;
             this.dateEnd = dateEnd;
             this.description = description;
@@ -90,19 +85,20 @@ public class Organization implements Serializable {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
             Place that = (Place) o;
-            return Objects.equals(dateStart, that.dateStart) &&
+            return Objects.equals(title, that.title) &&
+                    Objects.equals(dateStart, that.dateStart) &&
                     Objects.equals(dateEnd, that.dateEnd) &&
                     Objects.equals(description, that.description);
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(dateStart, dateEnd, description);
+            return Objects.hash(title, dateStart, dateEnd, description);
         }
 
         @Override
         public String toString() {
-            return "Place-> (" + dateStart + ", " + dateEnd + ", " + description + " )";
+            return "Place-> (" + title + ", " + dateStart + ", " + dateEnd + ", " + description + " )";
         }
     }
 }

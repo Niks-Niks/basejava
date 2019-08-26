@@ -8,11 +8,11 @@ import java.util.*;
 
 public class FileStorage extends AbstractStorage<File> {
     private File directory;
-    private ObjectStorage objectStorage;
+    private SerializationStrategy SerializationStrategy;
 
-    public FileStorage(File directory, ObjectStorage objectStorage) {
+    public FileStorage(File directory, SerializationStrategy SerializationStrategy) {
         Objects.requireNonNull(directory, "directory must not be null");
-        this.objectStorage = objectStorage;
+        this.SerializationStrategy = SerializationStrategy;
         if (!directory.isDirectory()) {
             throw new IllegalArgumentException(directory.getAbsolutePath() + " is not directory");
         }
@@ -63,7 +63,7 @@ public class FileStorage extends AbstractStorage<File> {
     @Override
     public void updateToStorage(File searchFile, Resume resume) {
         try {
-            objectStorage.doWrite(resume, new BufferedOutputStream(new FileOutputStream(searchFile)));
+            SerializationStrategy.doWrite(resume, new BufferedOutputStream(new FileOutputStream(searchFile)));
         } catch (IOException e) {
             throw new StorageException("File update error", resume.getUuid(), e);
         }
@@ -91,7 +91,7 @@ public class FileStorage extends AbstractStorage<File> {
     @Override
     public Resume getFromStorage(File searchFile) {
         try {
-            return objectStorage.doRead(new BufferedInputStream(new FileInputStream(searchFile)));
+            return SerializationStrategy.doRead(new BufferedInputStream(new FileInputStream(searchFile)));
         } catch (IOException e) {
             throw new StorageException("Read get error", e);
         }

@@ -2,7 +2,6 @@ package main.storage;
 
 import main.model.Resume;
 
-import java.io.IOException;
 import java.util.List;
 
 public interface Storage {
@@ -11,13 +10,13 @@ public interface Storage {
 
     void update(Resume resume);
 
-    void save(Resume resume) throws IOException;
+    void save(Resume resume);
 
-    Resume get(String uuid) throws IOException;
+    Resume get(String uuid);
 
     void delete(String uuid);
 
-    List<Resume> getAllSorted() throws IOException;
+    List<Resume> getAllSorted();
 
-    int size() throws IOException;
+    int size();
 }

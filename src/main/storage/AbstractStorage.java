@@ -4,7 +4,6 @@ import main.exception.ExistStorageException;
 import main.exception.NotExistStorageException;
 import main.model.Resume;
 
-import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
@@ -17,7 +16,7 @@ public abstract class AbstractStorage<SK> implements Storage {
     }
 
     @Override
-    public void save(Resume resume) throws IOException {
+    public void save(Resume resume) {
         SK searchKey = getNotExistSearchKey(resume.getUuid());
         saveToStorage(searchKey, resume);
     }
@@ -29,7 +28,7 @@ public abstract class AbstractStorage<SK> implements Storage {
     }
 
     @Override
-    public Resume get(String uuid) throws IOException {
+    public Resume get(String uuid){
         SK searchKey = getExistSearchKey(uuid);
         return getFromStorage(searchKey);
     }
@@ -51,23 +50,23 @@ public abstract class AbstractStorage<SK> implements Storage {
     }
 
     @Override
-    public List<Resume> getAllSorted() throws IOException {
+    public List<Resume> getAllSorted() {
         List<Resume> sortedList = copyAllSorted();
         Collections.sort(sortedList);
         return sortedList;
     }
 
-    protected abstract List<Resume> copyAllSorted() throws IOException;
+    protected abstract List<Resume> copyAllSorted();
 
     protected abstract boolean isExist(SK searchKey);
 
     protected abstract void updateToStorage(SK searchKey, Resume resume);
 
-    protected abstract void saveToStorage(SK searchKey, Resume resume) throws IOException;
+    protected abstract void saveToStorage(SK searchKey, Resume resume);
 
     protected abstract void deleteFromStorage(SK searchKey);
 
-    protected abstract Resume getFromStorage(SK searchKey) throws IOException;
+    protected abstract Resume getFromStorage(SK searchKey);
 
     protected abstract SK getSearchKey(String uuid);
 
