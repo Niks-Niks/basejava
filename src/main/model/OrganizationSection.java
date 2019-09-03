@@ -1,13 +1,17 @@
 package main.model;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import javax.xml.bind.annotation.*;
+import java.util.*;
 
+@XmlAccessorType(XmlAccessType.FIELD)
 public class OrganizationSection extends AbstractSection {
     private List<Organization> list;
 
     private static final long serialVersionUID = 1L;
+
+    public OrganizationSection() {
+
+    }
 
     public OrganizationSection(Organization list){
         this(Arrays.asList(list));

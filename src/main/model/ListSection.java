@@ -11,6 +11,9 @@ public class ListSection extends AbstractSection implements Serializable {
 
     private List<String> list;
 
+    public ListSection() {
+    }
+
     public ListSection(List<String> list) {
         this.list = list;
     }

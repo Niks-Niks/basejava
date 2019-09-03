@@ -2,6 +2,7 @@ package main;
 
 import main.model.Resume;
 import main.storage.*;
+import main.storage.serializer.SerializationStrategy;
 
 import java.io.File;
 import java.io.IOException;
@@ -10,7 +11,7 @@ import java.io.IOException;
  * Test for your ArrayStorage implementation
  */
 public class MainTestArrayStorage {
-    private static File path = new File("./src/main/uuid");
+    private static File path = new File("./uuid");
     static final AbstractStorage ARRAY_STORAGE = new PathStorage(path.getAbsolutePath(), new SerializationStrategy());
 
     public static void main(String[] args) throws IOException {

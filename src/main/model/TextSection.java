@@ -1,12 +1,16 @@
 package main.model;
 
+import javax.xml.bind.annotation.*;
 import java.util.Objects;
 
+@XmlAccessorType(XmlAccessType.FIELD)
 public class TextSection extends AbstractSection {
 
     private static final long serialVersionUID = 1L;
 
     private String text;
+
+    public TextSection() {}
 
     public TextSection(String title) {
         this.text = title;

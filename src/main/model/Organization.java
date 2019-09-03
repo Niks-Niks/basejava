@@ -1,20 +1,38 @@
 package main.model;
 
+import main.util.LocalDateAdapter;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Organization implements Serializable {
 
     private List<Place> list;
     private Link homePage;
+
     private static final long serialVersionUID = 1L;
+
+    public Organization() {
+
+    }
 
     public Organization(Link link, Place... data) {
         homePage = link;
         list = Arrays.asList(data);
+    }
+
+    public List<Place> getList() {
+        return list;
+    }
+
+    public Link getHomePage() {
+        return homePage;
     }
 
     @Override
@@ -36,14 +54,26 @@ public class Organization implements Serializable {
         return "( " + homePage + ", " + list + ')';
     }
 
+    @XmlAccessorType(XmlAccessType.FIELD)
     public static class Link implements Serializable {
 
         private String link;
         private String homePage;
 
+        public Link() {
+        }
+
         public Link(String link, String homePage) {
             this.link = link;
             this.homePage = homePage;
+        }
+
+        public String getLink() {
+            return link;
+        }
+
+        public String getHomePage() {
+            return homePage;
         }
 
         @Override
@@ -66,18 +96,41 @@ public class Organization implements Serializable {
         }
     }
 
+    @XmlAccessorType(XmlAccessType.FIELD)
     public static class Place implements Serializable{
 
-        private String title;
+        @XmlJavaTypeAdapter(LocalDateAdapter.class)
         private LocalDate dateStart;
+        @XmlJavaTypeAdapter(LocalDateAdapter.class)
         private LocalDate dateEnd;
+        private String title;
         private String description;
+
+        public Place() {
+
+        }
 
         public Place(String title, LocalDate date, LocalDate dateEnd, String description) {
             this.title = title;
             this.dateStart = date;
             this.dateEnd = dateEnd;
             this.description = description;
+        }
+
+        public LocalDate getDateStart() {
+            return dateStart;
+        }
+
+        public LocalDate getDateEnd() {
+            return dateEnd;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public String getDescription() {
+            return description;
         }
 
         @Override

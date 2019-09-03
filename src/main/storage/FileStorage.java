@@ -2,6 +2,7 @@ package main.storage;
 
 import main.exception.StorageException;
 import main.model.Resume;
+import main.storage.serializer.SerializationStrategy;
 
 import java.io.*;
 import java.util.*;

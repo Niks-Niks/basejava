@@ -2,6 +2,7 @@ package main.storage;
 
 import main.exception.StorageException;
 import main.model.Resume;
+import main.storage.serializer.Stream;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -15,10 +16,10 @@ import java.util.stream.Collectors;
 
 public class PathStorage extends AbstractStorage<Path> {
     private Path directory;
-    private SerializationStrategy SerializationStrategy;
+    private Stream SerializationStrategy;
 
-    public PathStorage(String directory, SerializationStrategy SerializationStrategy) {
-        this.SerializationStrategy = SerializationStrategy;
+    public PathStorage(String directory, Stream SerializationStrategy) {
+        this.SerializationStrategy =  SerializationStrategy;
         Objects.requireNonNull(directory, "directory must not be null");
         this.directory = Paths.get(directory);
         if (!Files.isDirectory(this.directory) || !Files.isWritable(this.directory)) {
@@ -91,6 +92,8 @@ public class PathStorage extends AbstractStorage<Path> {
         try {
             return SerializationStrategy.doRead(new BufferedInputStream(Files.newInputStream(searchPath)));
         } catch (IOException e) {
+            throw new StorageException("Path get error", searchPath.toAbsolutePath().toString(), e);
+        } catch (ClassNotFoundException e) {
             throw new StorageException("Path get error", searchPath.toAbsolutePath().toString(), e);
         }
     }
