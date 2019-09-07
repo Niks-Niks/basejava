@@ -2,12 +2,14 @@ package main.storage;
 
 import main.exception.ExistStorageException;
 import main.exception.NotExistStorageException;
-import main.model.Resume;
+import main.model.*;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -29,10 +31,35 @@ public class AbstractStorageTest {
     private static final String UUID_4 = "uuid4";
     private static final Resume RESUME_4 = new Resume(UUID_4, "fullName");
 
+    private static String inList = "Some text for Array";
+    private static ArrayList list = new ArrayList();
+
     protected AbstractStorageTest(Storage storage) {
         this.storage = storage;
     }
 
+    static {
+        RESUME_1.addContact(ContactType.LINKEDIN, "linkedIn");
+        RESUME_1.addContact(ContactType.GITHUB, "GitHub");
+        RESUME_1.addContact(ContactType.MAIL, "main");
+        RESUME_1.addContact(ContactType.SKYPE, "skype");
+        RESUME_1.addContact(ContactType.TELEPHONE, "tel");
+
+        list.add(inList);
+
+        RESUME_1.addSection(SectionType.PERSONAL, new TextSection("I'm okey"));
+        RESUME_1.addSection(SectionType.OBJECTIVE, new TextSection("first is first"));
+        RESUME_1.addSection(SectionType.EDUCATION, new OrganizationSection(new Organization(new Organization.Link("Link", "HomePage"),
+                new Organization.Place((LocalDate.of(2019, 8, 18)), LocalDate.of(2020, 8, 18), "title", "description"),
+                new Organization.Place((LocalDate.of(2019, 8, 18)), LocalDate.of(2020, 8, 18), "title_1", "description"),
+                new Organization.Place((LocalDate.of(2019, 8, 18)), LocalDate.of(2020, 8, 18), "title_2", "description"))));
+        RESUME_1.addSection(SectionType.ACHIEVEMENT, new ListSection(list));
+        RESUME_1.addSection(SectionType.QUALIFICATIONS, new ListSection(list));
+        RESUME_1.addSection(SectionType.EXPERIENCE, new OrganizationSection(new Organization(new Organization.Link("Link", "HomePage"),
+                new Organization.Place((LocalDate.of(2019, 8, 18)), LocalDate.of(2020, 8, 18), "title", "description"),
+                new Organization.Place((LocalDate.of(2019, 8, 18)), LocalDate.of(2020, 8, 18), "title_1", "description"))));
+
+    }
 
     @Before
     public void setUp() throws Exception {
@@ -102,7 +129,7 @@ public class AbstractStorageTest {
     public void getAllSorted() throws Exception {
         List<Resume> list = storage.getAllSorted();
         Assert.assertEquals(3, list.size());
-        Assert.assertEquals(Arrays.asList(RESUME_1, RESUME_2, RESUME_3), list);
+        Assert.assertEquals(list, Arrays.asList(RESUME_1, RESUME_2, RESUME_3));
     }
 
     @Test

@@ -91,9 +91,7 @@ public class PathStorage extends AbstractStorage<Path> {
     protected Resume getFromStorage(Path searchPath) {
         try {
             return SerializationStrategy.doRead(new BufferedInputStream(Files.newInputStream(searchPath)));
-        } catch (IOException e) {
-            throw new StorageException("Path get error", searchPath.toAbsolutePath().toString(), e);
-        } catch (ClassNotFoundException e) {
+        } catch (IOException | ClassNotFoundException e) {
             throw new StorageException("Path get error", searchPath.toAbsolutePath().toString(), e);
         }
     }

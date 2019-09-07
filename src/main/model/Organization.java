@@ -1,19 +1,25 @@
 package main.model;
 
 import main.util.LocalDateAdapter;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.Month;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
+import static main.util.DateUtil.NOW;
+import static main.util.DateUtil.of;
+
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Organization implements Serializable {
 
-    private List<Place> list;
+    private List list = new ArrayList<>();
     private Link homePage;
 
     private static final long serialVersionUID = 1L;
@@ -25,6 +31,11 @@ public class Organization implements Serializable {
     public Organization(Link link, Place... data) {
         homePage = link;
         list = Arrays.asList(data);
+    }
+
+    public <T> Organization(Link link, List<T>... place) {
+        homePage = link;
+        list = Arrays.asList(place);
     }
 
     public List<Place> getList() {
@@ -110,10 +121,10 @@ public class Organization implements Serializable {
 
         }
 
-        public Place(String title, LocalDate date, LocalDate dateEnd, String description) {
-            this.title = title;
-            this.dateStart = date;
+        public Place(LocalDate dateStart, LocalDate dateEnd, String title,  String description) {
+            this.dateStart = dateStart;
             this.dateEnd = dateEnd;
+            this.title = title;
             this.description = description;
         }
 
@@ -131,6 +142,10 @@ public class Organization implements Serializable {
 
         public String getDescription() {
             return description;
+        }
+
+        public Place(int startYear, Month startMonth, String title, String description) {
+            this(of(startYear, startMonth), NOW, title, description);
         }
 
         @Override
@@ -151,7 +166,12 @@ public class Organization implements Serializable {
 
         @Override
         public String toString() {
-            return "Place-> (" + title + ", " + dateStart + ", " + dateEnd + ", " + description + " )";
+            return "Place{" +
+                    "dateStart=" + dateStart +
+                    ", dateEnd=" + dateEnd +
+                    ", title='" + title + '\'' +
+                    ", description='" + description + '\'' +
+                    '}';
         }
     }
 }

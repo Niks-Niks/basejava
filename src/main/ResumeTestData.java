@@ -23,6 +23,7 @@ public class ResumeTestData {
             System.out.println(type.getTitle());
         }
 
+
         resume.addContact(ContactType.LINKEDIN, "linkedIn");
         resume.addContact(ContactType.GITHUB, "GitHub");
         resume.addContact(ContactType.MAIL, "main");
@@ -31,16 +32,19 @@ public class ResumeTestData {
 
         resume.addSection(SectionType.PERSONAL, new TextSection("I'm okey"));
         resume.addSection(SectionType.ACHIEVEMENT, new ListSection(listForListSection));
-        resume.addSection(SectionType.EDUCATION, new OrganizationSection(new Organization(new Organization.Link("Link", "HomePage"),
-                new Organization.Place("title", (LocalDate.of(2019, 8, 18)), LocalDate.of(2020, 8, 18), "description"),
-                new Organization.Place("title", (LocalDate.of(2019, 8, 18)), LocalDate.of(2020, 8, 18), "description"),
-                new Organization.Place("title", (LocalDate.of(2019, 8, 18)), LocalDate.of(2020, 8, 18), "description"))));
+        resume.addSection(SectionType.EDUCATION, new OrganizationSection(
+                new Organization(
+                        new Organization.Link("Link", "HomePage"),
+                        new Organization.Place((LocalDate.of(2019, 8, 18)), LocalDate.of(2020, 8, 18), "title", "description"),
+                        new Organization.Place((LocalDate.of(2019, 8, 18)), LocalDate.of(2020, 8, 18), "title", "description"),
+                        new Organization.Place((LocalDate.of(2019, 8, 18)), LocalDate.of(2020, 8, 18), "title", "description"))));
         resume.addSection(SectionType.OBJECTIVE, new TextSection("first is first"));
         resume.addSection(SectionType.QUALIFICATIONS, new ListSection(listForListSection));
-        resume.addSection(SectionType.EXPERIENCE, new OrganizationSection(new Organization(new Organization.Link("Link", "HomePage"),
-                new Organization.Place("title", (LocalDate.of(2019, 8, 18)), LocalDate.of(2020, 8, 18), "description"),
-                new Organization.Place("title", (LocalDate.of(2019, 8, 18)), LocalDate.of(2020, 8, 18), "description"),
-                new Organization.Place("title", (LocalDate.of(2019, 8, 18)), LocalDate.of(2020, 8, 18), "description"))));
+        resume.addSection(SectionType.EXPERIENCE, new OrganizationSection(
+                new Organization(
+                        new Organization.Link("Link", "HomePage"),
+                        new Organization.Place((LocalDate.of(2019, 8, 18)), LocalDate.of(2020, 8, 18), "title", "description"),
+                        new Organization.Place((LocalDate.of(2019, 8, 18)), LocalDate.of(2020, 8, 18), "title", "description"))));
 
         outContact(resume);
         outSection(resume);
