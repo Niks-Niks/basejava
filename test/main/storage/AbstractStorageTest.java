@@ -8,7 +8,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -49,15 +48,19 @@ public class AbstractStorageTest {
 
         RESUME_1.addSection(SectionType.PERSONAL, new TextSection("I'm okey"));
         RESUME_1.addSection(SectionType.OBJECTIVE, new TextSection("first is first"));
-        RESUME_1.addSection(SectionType.EDUCATION, new OrganizationSection(new Organization(new Organization.Link("Link", "HomePage"),
-                new Organization.Place((LocalDate.of(2019, 8, 18)), LocalDate.of(2020, 8, 18), "title", "description"),
-                new Organization.Place((LocalDate.of(2019, 8, 18)), LocalDate.of(2020, 8, 18), "title_1", "description"),
-                new Organization.Place((LocalDate.of(2019, 8, 18)), LocalDate.of(2020, 8, 18), "title_2", "description"))));
+        RESUME_1.addSection(SectionType.EDUCATION, new OrganizationSection(
+                new Organization(
+                        new Organization.Link("Link", "HomePage"),
+                        new Organization.Place("12", "13", "title", "description"),
+                        new Organization.Place("7", "6", "title_1", "description"),
+                        new Organization.Place("11", "5", "title_2", "description"))));
         RESUME_1.addSection(SectionType.ACHIEVEMENT, new ListSection(list));
         RESUME_1.addSection(SectionType.QUALIFICATIONS, new ListSection(list));
-        RESUME_1.addSection(SectionType.EXPERIENCE, new OrganizationSection(new Organization(new Organization.Link("Link", "HomePage"),
-                new Organization.Place((LocalDate.of(2019, 8, 18)), LocalDate.of(2020, 8, 18), "title", "description"),
-                new Organization.Place((LocalDate.of(2019, 8, 18)), LocalDate.of(2020, 8, 18), "title_1", "description"))));
+        RESUME_1.addSection(SectionType.EXPERIENCE, new OrganizationSection(
+                new Organization(
+                        new Organization.Link("Link", "HomePage"),
+                        new Organization.Place("1", "4", "title", "description"),
+                        new Organization.Place("2", "3", "title_1", "description"))));
 
     }
 

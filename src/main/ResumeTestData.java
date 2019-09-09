@@ -1,8 +1,9 @@
 package main;
 
-import main.model.*;
+import main.model.ContactType;
+import main.model.Resume;
+import main.model.SectionType;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,30 +25,30 @@ public class ResumeTestData {
         }
 
 
-        resume.addContact(ContactType.LINKEDIN, "linkedIn");
-        resume.addContact(ContactType.GITHUB, "GitHub");
-        resume.addContact(ContactType.MAIL, "main");
-        resume.addContact(ContactType.SKYPE, "skype");
-        resume.addContact(ContactType.TELEPHONE, "tel");
-
-        resume.addSection(SectionType.PERSONAL, new TextSection("I'm okey"));
-        resume.addSection(SectionType.ACHIEVEMENT, new ListSection(listForListSection));
-        resume.addSection(SectionType.EDUCATION, new OrganizationSection(
-                new Organization(
-                        new Organization.Link("Link", "HomePage"),
-                        new Organization.Place((LocalDate.of(2019, 8, 18)), LocalDate.of(2020, 8, 18), "title", "description"),
-                        new Organization.Place((LocalDate.of(2019, 8, 18)), LocalDate.of(2020, 8, 18), "title", "description"),
-                        new Organization.Place((LocalDate.of(2019, 8, 18)), LocalDate.of(2020, 8, 18), "title", "description"))));
-        resume.addSection(SectionType.OBJECTIVE, new TextSection("first is first"));
-        resume.addSection(SectionType.QUALIFICATIONS, new ListSection(listForListSection));
-        resume.addSection(SectionType.EXPERIENCE, new OrganizationSection(
-                new Organization(
-                        new Organization.Link("Link", "HomePage"),
-                        new Organization.Place((LocalDate.of(2019, 8, 18)), LocalDate.of(2020, 8, 18), "title", "description"),
-                        new Organization.Place((LocalDate.of(2019, 8, 18)), LocalDate.of(2020, 8, 18), "title", "description"))));
-
-        outContact(resume);
-        outSection(resume);
+//        resume.addContact(ContactType.LINKEDIN, "linkedIn");
+//        resume.addContact(ContactType.GITHUB, "GitHub");
+//        resume.addContact(ContactType.MAIL, "main");
+//        resume.addContact(ContactType.SKYPE, "skype");
+//        resume.addContact(ContactType.TELEPHONE, "tel");
+//
+//        resume.addSection(SectionType.PERSONAL, new TextSection("I'm okey"));
+//        resume.addSection(SectionType.ACHIEVEMENT, new ListSection(listForListSection));
+//        resume.addSection(SectionType.EDUCATION, new OrganizationSection(
+//                new Organization(
+//                        new Organization.Link("Link", "HomePage"),
+//                        new Organization.Place((LocalDate.of(2019, 8, 18)), LocalDate.of(2020, 8, 18), "title", "description"),
+//                        new Organization.Place((LocalDate.of(2019, 8, 18)), LocalDate.of(2020, 8, 18), "title", "description"),
+//                        new Organization.Place((LocalDate.of(2019, 8, 18)), LocalDate.of(2020, 8, 18), "title", "description"))));
+//        resume.addSection(SectionType.OBJECTIVE, new TextSection("first is first"));
+//        resume.addSection(SectionType.QUALIFICATIONS, new ListSection(listForListSection));
+//        resume.addSection(SectionType.EXPERIENCE, new OrganizationSection(
+//                new Organization(
+//                        new Organization.Link("Link", "HomePage"),
+//                        new Organization.Place((LocalDate.of(2019, 8, 18)), LocalDate.of(2020, 8, 18), "title", "description"),
+//                        new Organization.Place((LocalDate.of(2019, 8, 18)), LocalDate.of(2020, 8, 18), "title", "description"))));
+//
+//        outContact(resume);
+//        outSection(resume);
     }
 
     private static void outContact(Resume resume) {

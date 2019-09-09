@@ -6,15 +6,10 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
-import java.time.LocalDate;
-import java.time.Month;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-
-import static main.util.DateUtil.NOW;
-import static main.util.DateUtil.of;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Organization implements Serializable {
@@ -111,9 +106,9 @@ public class Organization implements Serializable {
     public static class Place implements Serializable{
 
         @XmlJavaTypeAdapter(LocalDateAdapter.class)
-        private LocalDate dateStart;
+        private String dateStart;
         @XmlJavaTypeAdapter(LocalDateAdapter.class)
-        private LocalDate dateEnd;
+        private String dateEnd;
         private String title;
         private String description;
 
@@ -121,18 +116,18 @@ public class Organization implements Serializable {
 
         }
 
-        public Place(LocalDate dateStart, LocalDate dateEnd, String title,  String description) {
+        public Place(String dateStart, String dateEnd, String title,  String description) {
             this.dateStart = dateStart;
             this.dateEnd = dateEnd;
             this.title = title;
             this.description = description;
         }
 
-        public LocalDate getDateStart() {
+        public String getDateStart() {
             return dateStart;
         }
 
-        public LocalDate getDateEnd() {
+        public String getDateEnd() {
             return dateEnd;
         }
 
@@ -144,9 +139,6 @@ public class Organization implements Serializable {
             return description;
         }
 
-        public Place(int startYear, Month startMonth, String title, String description) {
-            this(of(startYear, startMonth), NOW, title, description);
-        }
 
         @Override
         public boolean equals(Object o) {
