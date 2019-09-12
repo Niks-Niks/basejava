@@ -3,6 +3,7 @@ package main.storage.serializer;
 import main.model.*;
 
 import java.io.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -41,8 +42,8 @@ public class DataStreamSerializer implements Stream {
                             dos.writeUTF(item.getHomePage().getLink());
                             dos.writeUTF(item.getHomePage().getHomePage());
                             writer(dos, item.getList(), place -> {
-                                dos.writeUTF(place.getDateStart());
-                                dos.writeUTF(place.getDateEnd());
+                                writeDate(dos, place.getDateStart());
+                                writeDate(dos, place.getDateEnd());
                                 dos.writeUTF(place.getTitle());
                                 dos.writeUTF(place.getDescription());
                             });
@@ -82,12 +83,21 @@ public class DataStreamSerializer implements Stream {
                         listReader(dis, () -> new Organization(
                                 new Organization.Link(dis.readUTF(), dis.readUTF()),
                                 listReader(dis, () -> new Organization.Place(
-                                        dis.readUTF(), dis.readUTF(), dis.readUTF(), dis.readUTF()
+                                        readDate(dis), readDate(dis), dis.readUTF(), dis.readUTF()
                                 ))
                         )));
             default:
                 throw new IllegalArgumentException();
         }
+    }
+
+    private void writeDate(DataOutputStream dos, LocalDate ld) throws IOException {
+        dos.writeInt(ld.getYear());
+        dos.writeInt(ld.getMonth().getValue());
+    }
+
+    private LocalDate readDate(DataInputStream dis) throws IOException {
+        return LocalDate.of(dis.readInt(), dis.readInt(), 7);
     }
 
     private <T> List<T> listReader(DataInputStream dis, Reader<T> reader) throws IOException {

@@ -6,6 +6,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -106,9 +107,9 @@ public class Organization implements Serializable {
     public static class Place implements Serializable{
 
         @XmlJavaTypeAdapter(LocalDateAdapter.class)
-        private String dateStart;
+        private LocalDate dateStart;
         @XmlJavaTypeAdapter(LocalDateAdapter.class)
-        private String dateEnd;
+        private LocalDate dateEnd;
         private String title;
         private String description;
 
@@ -116,18 +117,18 @@ public class Organization implements Serializable {
 
         }
 
-        public Place(String dateStart, String dateEnd, String title,  String description) {
+        public Place(LocalDate dateStart, LocalDate dateEnd, String title,  String description) {
             this.dateStart = dateStart;
             this.dateEnd = dateEnd;
             this.title = title;
             this.description = description;
         }
 
-        public String getDateStart() {
+        public LocalDate getDateStart() {
             return dateStart;
         }
 
-        public String getDateEnd() {
+        public LocalDate getDateEnd() {
             return dateEnd;
         }
 
