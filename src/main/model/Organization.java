@@ -7,15 +7,19 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
+import static main.util.DateUtil.NOW;
+import static main.util.DateUtil.of;
+
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Organization implements Serializable {
 
-    private List list = new ArrayList<>();
+    private List<Place> list = new ArrayList<>();
     private Link homePage;
 
     private static final long serialVersionUID = 1L;
@@ -24,14 +28,13 @@ public class Organization implements Serializable {
 
     }
 
-    public Organization(Link link, Place... data) {
-        homePage = link;
-        list = Arrays.asList(data);
+    public Organization(String name, String url, Place... list) {
+        this(new Link(name, url), Arrays.asList(list));
     }
 
-    public <T> Organization(Link link, List<T>... place) {
-        homePage = link;
-        list = Arrays.asList(place);
+    public Organization(Link homePage, List<Place> list) {
+        this.list = list;
+        this.homePage = homePage;
     }
 
     public List<Place> getList() {
@@ -124,6 +127,14 @@ public class Organization implements Serializable {
             this.description = description;
         }
 
+        public Place(int startYear, Month startMonth, String title, String description) {
+            this(of(startYear, startMonth), NOW, title, description);
+        }
+
+        public Place(int startYear, Month startMonth, int endYear, Month endMonth, String title, String description) {
+            this(of(startYear, startMonth), of(endYear, endMonth), title, description);
+        }
+
         public LocalDate getDateStart() {
             return dateStart;
         }
@@ -146,15 +157,15 @@ public class Organization implements Serializable {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
             Place that = (Place) o;
-            return Objects.equals(title, that.title) &&
-                    Objects.equals(dateStart, that.dateStart) &&
+            return  Objects.equals(dateStart, that.dateStart) &&
                     Objects.equals(dateEnd, that.dateEnd) &&
+                    Objects.equals(title, that.title) &&
                     Objects.equals(description, that.description);
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(title, dateStart, dateEnd, description);
+            return Objects.hash(dateStart, dateEnd, title, description);
         }
 
         @Override

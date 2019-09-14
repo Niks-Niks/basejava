@@ -18,7 +18,7 @@ public class DataStreamSerializer implements Stream {
             dos.writeUTF(resume.getUuid());
             dos.writeUTF(resume.getFullName());
             Map<ContactType, String> contacts = resume.getContacts();
-             writer(dos, contacts.entrySet(), entry -> {
+            writer(dos, contacts.entrySet(), entry -> {
                 dos.writeUTF(entry.getKey().name());
                 dos.writeUTF(entry.getValue());
             });
@@ -97,7 +97,7 @@ public class DataStreamSerializer implements Stream {
     }
 
     private LocalDate readDate(DataInputStream dis) throws IOException {
-        return LocalDate.of(dis.readInt(), dis.readInt(), 7);
+        return LocalDate.of(dis.readInt(), dis.readInt(), 1);
     }
 
     private <T> List<T> listReader(DataInputStream dis, Reader<T> reader) throws IOException {

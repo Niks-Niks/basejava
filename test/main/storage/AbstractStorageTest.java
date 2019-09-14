@@ -50,18 +50,16 @@ public class AbstractStorageTest {
         RESUME_1.addSection(SectionType.PERSONAL, new TextSection("I'm okey"));
         RESUME_1.addSection(SectionType.OBJECTIVE, new TextSection("first is first"));
         RESUME_1.addSection(SectionType.EDUCATION, new OrganizationSection(
-                new Organization(
-                        new Organization.Link("Link", "HomePage"),
-                        new Organization.Place(LocalDate.of(2020, 1, 1), LocalDate.of(2020, 12, 12), "title", "description"),
-                        new Organization.Place(LocalDate.of(2020, 1, 1), LocalDate.of(2020, 12, 12), "Title_2", "description"),
-                        new Organization.Place(LocalDate.of(2020, 1, 1), LocalDate.of(2020, 12, 12), "title_2", "description"))));
+                new Organization("","",
+                        new Organization.Place(LocalDate.of(2020, 1, 1), LocalDate.of(2020, 12, 1), "title", "description"),
+                        new Organization.Place(LocalDate.of(2020, 1, 1), LocalDate.of(2020, 12, 1), "Title_2", "description")
+                )));
         RESUME_1.addSection(SectionType.ACHIEVEMENT, new ListSection(list));
         RESUME_1.addSection(SectionType.QUALIFICATIONS, new ListSection(list));
         RESUME_1.addSection(SectionType.EXPERIENCE, new OrganizationSection(
-                new Organization(
-                        new Organization.Link("Link", "HomePage"),
-                        new Organization.Place(LocalDate.of(2020, 1, 1), LocalDate.of(2020, 12, 12), "title", "description"),
-                        new Organization.Place(LocalDate.of(2020, 1, 1), LocalDate.of(2020, 12, 12), "Title_2", "description"))));
+                new Organization("Link", "HomePage",
+                        new Organization.Place(LocalDate.of(2020, 1, 1), LocalDate.of(2020, 12, 1), "title", "description"),
+                        new Organization.Place(LocalDate.of(2020, 1, 1), LocalDate.of(2020, 12, 1), "Title_2", "description"))));
 
     }
 
