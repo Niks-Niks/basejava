@@ -4,10 +4,7 @@ import main.model.*;
 
 import java.io.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 public class DataStreamSerializer implements Stream {
@@ -109,8 +106,8 @@ public class DataStreamSerializer implements Stream {
         return list;
     }
 
-    private interface Read {
-        void read() throws IOException;
+    private interface readRecord {
+        void readRecord() throws IOException;
     }
 
     private interface Reader<T> {
@@ -121,10 +118,10 @@ public class DataStreamSerializer implements Stream {
         void write(T t) throws IOException;
     }
 
-    private void Reader(DataInputStream dis, Read reador) throws IOException {
+    private void Reader(DataInputStream dis, readRecord reader) throws IOException {
         int size = dis.readInt();
         for (int i = 0; i < size; i++) {
-            reador.read();
+            reader.readRecord();
         }
     }
 

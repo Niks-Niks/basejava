@@ -3,29 +3,18 @@ package main;
 public class DeadLock {
 
     public static void main(String[] args) {
+        DeadLock dl = new DeadLock();
         Object x = new Object();
         Object y = new Object();
 
-        new Thread(() -> {
-            synchronized (x) {
-                System.out.println(Thread.currentThread().getName() + " inside first Object.");
+        dl.synchronizedFlow(x, y);
+        dl.synchronizedFlow(y, x);
+    }
 
-                try {
-                    Thread.sleep(500);
-                } catch (InterruptedException e) {
-                    System.out.println("Error in sleep");
-                }
-
-                System.out.println(Thread.currentThread().getName() + " try to get in first Object.");
-                synchronized (y) {
-                    System.out.println(Thread.currentThread().getName() + " inside second Object.");
-                }
-            }
-        }).start();
-
+    private void synchronizedFlow(Object x, Object y) {
         new Thread(() -> {
             synchronized (y) {
-                System.out.println(Thread.currentThread().getName() + " inside second Object.");
+                System.out.println(Thread.currentThread().getName() + " inside Object.");
 
                 try {
                     Thread.sleep(500);
@@ -33,11 +22,13 @@ public class DeadLock {
                     System.out.println("Error in sleep");
                 }
 
-                System.out.println(Thread.currentThread().getName() + " try to get in second Object.");
+                System.out.println(Thread.currentThread().getName() + " try to get enemy Object.");
+
                 synchronized (x) {
-                    System.out.println(Thread.currentThread().getName() + " inside first Object.");
+                    System.out.println(Thread.currentThread().getName() + " inside enemy Object.");
                 }
             }
         }).start();
+
     }
 }
