@@ -13,22 +13,19 @@ public class HomeWork {
     }
 
     private static int minValue(int[] values) {
-        int arrays = Arrays.stream(values).distinct().min().getAsInt();
-        return arrays;
+        int[] array = Arrays.stream(values).sorted().distinct().toArray();
+        int result = 0;
+        for (int i = array.length - 1, n = 0; i >= 0; --i, n++) {
+            int pos = (int) Math.pow(10, i);
+            result += array[n] * pos;
+        }
+        return result;
     }
 
     private static List<Integer> oddOrEven(List<Integer> integers) {
         int sum = integers.stream().mapToInt(Integer::intValue).sum();
-        return getList(integers, sum);
-    }
-
-    private static List<Integer> getList(List<Integer> integers, int sum) {
-        List<Integer> result;
-        if (sum % 2 == 0) {
-            result = integers.stream().filter(s -> s % 2 != 0).collect(Collectors.toList());
-        } else {
-            result = integers.stream().filter(s -> s % 2 == 0).collect(Collectors.toList());
-        }
+        System.out.println("Sum-> " + sum);
+        List<Integer> result = integers.stream().filter(s -> sum % 2 == 0 ? s % 2 != 0 : s % 2 == 0).collect(Collectors.toList());
         return result;
     }
 }
