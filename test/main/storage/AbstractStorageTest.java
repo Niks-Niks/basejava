@@ -1,5 +1,6 @@
 package main.storage;
 
+import main.Config;
 import main.exception.ExistStorageException;
 import main.exception.NotExistStorageException;
 import main.model.Resume;
@@ -15,7 +16,7 @@ public class AbstractStorageTest {
 
     protected Storage storage;
 
-    protected static final File STORAGE_DIRECTORY = new File("./uuid");
+    protected static final File STORAGE_DIRECTORY = Config.get().getStorageDir();
 
     private static final String UUID_1 = "uuid1";
     private static final Resume RESUME_1 = new Resume(UUID_1, "fullName");
@@ -63,7 +64,7 @@ public class AbstractStorageTest {
 
     @Before
     public void setUp() throws Exception {
-//        storage.clear();
+        storage.clear();
         storage.save(RESUME_1);
         storage.save(RESUME_2);
         storage.save(RESUME_3);
