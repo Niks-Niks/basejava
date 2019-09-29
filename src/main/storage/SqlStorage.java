@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SqlStorage implements Storage {
-    public static SqlHelper sqlHelper;
+    public SqlHelper sqlHelper;
     private ResultSet rs;
 
     public SqlStorage(String dbUrl, String dbUser, String dbPassword) {

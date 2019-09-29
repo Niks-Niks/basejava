@@ -1,6 +1,7 @@
 package main.sql;
 
 import main.exception.ExistStorageException;
+import main.exception.StorageException;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -19,12 +20,14 @@ public class SqlHelper {
         helper(sql, PreparedStatement::execute);
     }
 
-    public <T> T helper(String sql, ExecuteCode lambda) {
+    public <T> T helper(String sql, ExecuteCode<T> lambda) {
         try (Connection conn = connectionFactory.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-            return (T) lambda.execute(ps);
+            return lambda.execute(ps);
         } catch (SQLException e) {
-            throw new ExistStorageException("Error in helper");
+            if (e.getSQLState().equals("23505")) {
+                throw new ExistStorageException(null);
+            } else throw new StorageException("Error in helper", e);
         }
     }
 
