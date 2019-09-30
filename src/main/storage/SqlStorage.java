@@ -10,7 +10,6 @@ import java.util.List;
 
 public class SqlStorage implements Storage {
     public SqlHelper sqlHelper;
-    private ResultSet rs;
 
     public SqlStorage(String dbUrl, String dbUser, String dbPassword) {
         sqlHelper = new SqlHelper(dbUrl, dbUser, dbPassword);
@@ -27,7 +26,7 @@ public class SqlStorage implements Storage {
         return sqlHelper.helper(sql, ps -> {
             ps.setString(1, uuid);
             ResultSet rs = ps.executeQuery();
-            while (!rs.next()) {
+            if (!rs.next()) {
                 throw new NotExistStorageException(null);
             }
             return new Resume(uuid, rs.getString("full_name"));
@@ -74,21 +73,21 @@ public class SqlStorage implements Storage {
     public List<Resume> getAllSorted() {
         String sql = "SELECT * FROM resume";
         List<Resume> resume = new ArrayList<>();
-        sqlHelper.helper(sql, ps -> {
-            rs = ps.executeQuery();
+        return sqlHelper.helper(sql, ps -> {
+            ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                resume.add(new Resume(rs.getString("uuid"), rs.getString("full_name")));
+                resume.add(new Resume(rs.getString("uuid").trim(), rs.getString("full_name").trim()));
             }
             return resume;
         });
-        return resume;
+
     }
 
     @Override
     public int size() {
         String sql = "SELECT count(*) FROM resume;";
         return sqlHelper.helper(sql, ps -> {
-            rs = ps.executeQuery();
+            ResultSet rs = ps.executeQuery();
             return rs.next() ? rs.getInt(1) : 0;
         });
     }
