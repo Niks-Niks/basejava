@@ -1,1 +1,1 @@
-select * from resume;
+select * from contact;

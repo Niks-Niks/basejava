@@ -3,6 +3,7 @@ package main.storage;
 import main.Config;
 import main.exception.ExistStorageException;
 import main.exception.NotExistStorageException;
+import main.model.ContactType;
 import main.model.Resume;
 import org.junit.Assert;
 import org.junit.Before;
@@ -38,11 +39,29 @@ public class AbstractStorageTest {
     }
 
     static {
-//        RESUME_1.addContact(ContactType.LINKEDIN, "linkedIn");
-//        RESUME_1.addContact(ContactType.GITHUB, "GitHub");
-//        RESUME_1.addContact(ContactType.MAIL, "main");
-//        RESUME_1.addContact(ContactType.SKYPE, "skype");
-//        RESUME_1.addContact(ContactType.TELEPHONE, "tel");
+        RESUME_1.addContact(ContactType.LINKEDIN, "linkedIn");
+        RESUME_1.addContact(ContactType.GITHUB, "GitHub");
+        RESUME_1.addContact(ContactType.MAIL, "main");
+        RESUME_1.addContact(ContactType.SKYPE, "skype");
+        RESUME_1.addContact(ContactType.TELEPHONE, "tel");
+
+        RESUME_2.addContact(ContactType.LINKEDIN, "linkedIn");
+        RESUME_2.addContact(ContactType.GITHUB, "GitHub");
+        RESUME_2.addContact(ContactType.MAIL, "main");
+        RESUME_2.addContact(ContactType.SKYPE, "skype");
+        RESUME_2.addContact(ContactType.TELEPHONE, "tel");
+
+        RESUME_3.addContact(ContactType.LINKEDIN, "linkedIn");
+        RESUME_3.addContact(ContactType.GITHUB, "GitHub");
+        RESUME_3.addContact(ContactType.MAIL, "main");
+        RESUME_3.addContact(ContactType.SKYPE, "skype");
+        RESUME_3.addContact(ContactType.TELEPHONE, "tel");
+
+        RESUME_4.addContact(ContactType.LINKEDIN, "linkedIn");
+        RESUME_4.addContact(ContactType.GITHUB, "GitHub");
+        RESUME_4.addContact(ContactType.MAIL, "main");
+        RESUME_4.addContact(ContactType.SKYPE, "skype");
+        RESUME_4.addContact(ContactType.TELEPHONE, "tel");
 
 //        list.add(inList);
 
@@ -79,6 +98,11 @@ public class AbstractStorageTest {
     @Test
     public void update() throws Exception {
         Resume resume = new Resume(UUID_1, "fullName");
+        resume.addContact(ContactType.LINKEDIN, "linkedIn");
+        resume.addContact(ContactType.GITHUB, "GitHub");
+        resume.addContact(ContactType.MAIL, "main");
+        resume.addContact(ContactType.SKYPE, "skype");
+        resume.addContact(ContactType.TELEPHONE, "tel");
         storage.update(resume);
         Assert.assertEquals(resume, storage.get(UUID_1));
     }
@@ -87,9 +111,7 @@ public class AbstractStorageTest {
     public void save() throws Exception {
         storage.save(RESUME_4);
         Assert.assertEquals(4, storage.size());
-
         Assert.assertEquals(RESUME_4, storage.get(UUID_4));
-        System.out.println(UUID_4);
     }
 
     @Test(expected = ExistStorageException.class)

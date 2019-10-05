@@ -31,8 +31,32 @@ public class SqlHelper {
         }
     }
 
+    public <T> T transactionalExecute(SqlTransaction<T> executor) {
+        T res = null;
+        try (Connection conn = connectionFactory.getConnection()) {
+            try {
+                conn.setAutoCommit(false);
+                res = executor.execute(conn);
+                conn.commit();
+            } catch (SQLException e) {
+                conn.rollback();
+                if (e.getSQLState().equals("23505")) {
+                    throw new ExistStorageException(null);
+                }
+            }
+        } catch (SQLException e) {
+            throw new StorageException("Error in SqlHelper transaction", e);
+        }
+        return res;
+    }
+
+
     public interface ExecuteCode<T> {
         T execute(PreparedStatement ps) throws SQLException;
+    }
+
+    public interface SqlTransaction<T> {
+        T execute(Connection conn) throws SQLException;
     }
 
 }
