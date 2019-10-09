@@ -5,8 +5,7 @@ import main.model.ContactType;
 import main.model.Resume;
 import main.sql.SqlHelper;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
+import java.sql.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -103,16 +102,13 @@ public class SqlStorage implements Storage {
                     ResultSet rs = ps.executeQuery();
                     while (rs.next()) {
                         String uuid = rs.getString("uuid").trim();
-                        Resume resume = map.get(uuid);
-                        if (resume == null) {
-                            resume = new Resume(uuid.trim(), rs.getString("full_name").trim());
-                            map.put(uuid, resume);
-                        }
+                        String fullName = rs.getString("full_name").trim();
+                        Resume resume;
+                        resume = map.computeIfAbsent(uuid, k -> new Resume(uuid, fullName));
                         addContact(resume, rs);
                     }
                     return new ArrayList<>(map.values());
                 });
-
     }
 
     @Override
