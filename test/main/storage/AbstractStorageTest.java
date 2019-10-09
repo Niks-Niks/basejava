@@ -39,26 +39,26 @@ public class AbstractStorageTest {
     }
 
     static {
-        RESUME_1.addContact(ContactType.LINKEDIN, "linkedIn");
-        RESUME_1.addContact(ContactType.GITHUB, "GitHub");
+//        RESUME_1.addContact(ContactType.LINKEDIN, "linkedIn");
+//        RESUME_1.addContact(ContactType.GITHUB, "GitHub");
         RESUME_1.addContact(ContactType.MAIL, "main");
         RESUME_1.addContact(ContactType.SKYPE, "skype");
         RESUME_1.addContact(ContactType.TELEPHONE, "tel");
 
-        RESUME_2.addContact(ContactType.LINKEDIN, "linkedIn");
-        RESUME_2.addContact(ContactType.GITHUB, "GitHub");
+//        RESUME_2.addContact(ContactType.LINKEDIN, "linkedIn");
+//        RESUME_2.addContact(ContactType.GITHUB, "GitHub");
         RESUME_2.addContact(ContactType.MAIL, "main");
-        RESUME_2.addContact(ContactType.SKYPE, "skype");
-        RESUME_2.addContact(ContactType.TELEPHONE, "tel");
-
-        RESUME_3.addContact(ContactType.LINKEDIN, "linkedIn");
-        RESUME_3.addContact(ContactType.GITHUB, "GitHub");
-        RESUME_3.addContact(ContactType.MAIL, "main");
+//        RESUME_2.addContact(ContactType.SKYPE, "skype");
+//        RESUME_2.addContact(ContactType.TELEPHONE, "tel");
+//
+//        RESUME_3.addContact(ContactType.LINKEDIN, "linkedIn");
+//        RESUME_3.addContact(ContactType.GITHUB, "GitHub");
+//        RESUME_3.addContact(ContactType.MAIL, "main");
         RESUME_3.addContact(ContactType.SKYPE, "skype");
-        RESUME_3.addContact(ContactType.TELEPHONE, "tel");
-
-        RESUME_4.addContact(ContactType.LINKEDIN, "linkedIn");
-        RESUME_4.addContact(ContactType.GITHUB, "GitHub");
+//        RESUME_3.addContact(ContactType.TELEPHONE, "tel");
+//
+//        RESUME_4.addContact(ContactType.LINKEDIN, "linkedIn");
+//        RESUME_4.addContact(ContactType.GITHUB, "GitHub");
         RESUME_4.addContact(ContactType.MAIL, "main");
         RESUME_4.addContact(ContactType.SKYPE, "skype");
         RESUME_4.addContact(ContactType.TELEPHONE, "tel");
@@ -100,9 +100,9 @@ public class AbstractStorageTest {
         Resume resume = new Resume(UUID_1, "fullName");
         resume.addContact(ContactType.LINKEDIN, "linkedIn");
         resume.addContact(ContactType.GITHUB, "GitHub");
-        resume.addContact(ContactType.MAIL, "main");
-        resume.addContact(ContactType.SKYPE, "skype");
-        resume.addContact(ContactType.TELEPHONE, "tel");
+//        resume.addContact(ContactType.MAIL, "main");
+//        resume.addContact(ContactType.SKYPE, "skype");
+//        resume.addContact(ContactType.TELEPHONE, "tel");
         storage.update(resume);
         Assert.assertEquals(resume, storage.get(UUID_1));
     }
