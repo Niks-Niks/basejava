@@ -148,12 +148,6 @@ public class SqlStorage implements Storage {
             ps.setString(1, r.getUuid());
             ps.execute();
         }
-
-        sqlHelper.helper(sql, ps -> {
-            ps.setString(1, r.getUuid());
-            ps.execute();
-            return null;
-        });
     }
 }
 
