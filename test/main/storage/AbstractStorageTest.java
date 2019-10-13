@@ -5,6 +5,8 @@ import main.exception.ExistStorageException;
 import main.exception.NotExistStorageException;
 import main.model.ContactType;
 import main.model.Resume;
+import main.model.SectionType;
+import main.model.TextSection;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -65,8 +67,8 @@ public class AbstractStorageTest {
 
 //        list.add(inList);
 
-//        RESUME_1.addSection(SectionType.PERSONAL, new TextSection("I'm okey"));
-//        RESUME_1.addSection(SectionType.OBJECTIVE, new TextSection("first is first"));
+        RESUME_1.addSection(SectionType.ACHIEVEMENT, new TextSection("first is first"));
+        RESUME_1.addSection(SectionType.OBJECTIVE, new TextSection("first is second"));
 //        RESUME_1.addSection(SectionType.EDUCATION, new OrganizationSection(
 //                new Organization("","",
 //                        new Organization.Place(LocalDate.of(2020, 1, 1), LocalDate.of(2020, 12, 1), "title", "description"),
@@ -151,7 +153,7 @@ public class AbstractStorageTest {
     @Test
     public void getAllSorted() throws Exception {
         List<Resume> resumes = storage.getAllSorted();
-        Assert.assertEquals(3, resumes.size());
+//        Assert.assertEquals(3, resumes.size());
         Assert.assertEquals(resumes, Arrays.asList(RESUME_1, RESUME_2, RESUME_3));
     }
 

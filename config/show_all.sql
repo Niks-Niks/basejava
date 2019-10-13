@@ -1,1 +1,2 @@
-select * from contact;
+SELECT * FROM section
+
