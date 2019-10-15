@@ -1,6 +1,5 @@
 package main.sql;
 
-import main.exception.ExistStorageException;
 import main.exception.StorageException;
 
 import java.sql.Connection;
@@ -25,9 +24,7 @@ public class SqlHelper {
              PreparedStatement ps = conn.prepareStatement(sql)) {
             return lambda.execute(ps);
         } catch (SQLException e) {
-            if (e.getSQLState().equals("23505")) {
-                throw new ExistStorageException(null);
-            } else throw new StorageException("Error in helper", e);
+            throw ExceptionUtil.convertException(e);
         }
     }
 
@@ -38,16 +35,14 @@ public class SqlHelper {
                 conn.setAutoCommit(false);
                 res = executor.execute(conn);
                 conn.commit();
+                return res;
             } catch (SQLException e) {
                 conn.rollback();
-                if (e.getSQLState().equals("23505")) {
-                    throw new ExistStorageException(null);
-                }
+                throw ExceptionUtil.convertException(e);
             }
         } catch (SQLException e) {
             throw new StorageException("Error in SqlHelper transaction", e);
         }
-        return res;
     }
 
 

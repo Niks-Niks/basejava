@@ -3,15 +3,13 @@ package main.storage;
 import main.Config;
 import main.exception.ExistStorageException;
 import main.exception.NotExistStorageException;
-import main.model.ContactType;
-import main.model.Resume;
-import main.model.SectionType;
-import main.model.TextSection;
+import main.model.*;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -33,8 +31,9 @@ public class AbstractStorageTest {
     private static final String UUID_4 = "uuid4";
     private static final Resume RESUME_4 = new Resume(UUID_4, "fullName");
 
-//    private static String inList = "Some text for Array";
-//    private static ArrayList list = new ArrayList();
+    private static String inList = "Some text for Array";
+    private static String inList1 = "Some text for Array";
+    private static ArrayList list = new ArrayList();
 
     protected AbstractStorageTest(Storage storage) {
         this.storage = storage;
@@ -65,7 +64,8 @@ public class AbstractStorageTest {
         RESUME_4.addContact(ContactType.SKYPE, "skype");
         RESUME_4.addContact(ContactType.TELEPHONE, "tel");
 
-//        list.add(inList);
+        list.add(inList);
+        list.add(inList1);
 
         RESUME_1.addSection(SectionType.ACHIEVEMENT, new TextSection("first is first"));
         RESUME_1.addSection(SectionType.OBJECTIVE, new TextSection("first is second"));
@@ -74,8 +74,8 @@ public class AbstractStorageTest {
 //                        new Organization.Place(LocalDate.of(2020, 1, 1), LocalDate.of(2020, 12, 1), "title", "description"),
 //                        new Organization.Place(LocalDate.of(2020, 1, 1), LocalDate.of(2020, 12, 1), "Title_2", "description")
 //                )));
-//        RESUME_1.addSection(SectionType.ACHIEVEMENT, new ListSection(list));
-//        RESUME_1.addSection(SectionType.QUALIFICATIONS, new ListSection(list));
+        RESUME_1.addSection(SectionType.ACHIEVEMENT, new ListSection(list));
+        RESUME_1.addSection(SectionType.QUALIFICATIONS, new ListSection(list));
 //        RESUME_1.addSection(SectionType.EXPERIENCE, new OrganizationSection(
 //                new Organization("Link", "HomePage",
 //                        new Organization.Place(LocalDate.of(2020, 1, 1), LocalDate.of(2020, 12, 1), "title", "description"),
@@ -102,6 +102,8 @@ public class AbstractStorageTest {
         Resume resume = new Resume(UUID_1, "fullName");
         resume.addContact(ContactType.LINKEDIN, "linkedIn");
         resume.addContact(ContactType.GITHUB, "GitHub");
+        RESUME_1.addSection(SectionType.ACHIEVEMENT, new TextSection("first is first"));
+        RESUME_1.addSection(SectionType.OBJECTIVE, new TextSection("first is second"));
 //        resume.addContact(ContactType.MAIL, "main");
 //        resume.addContact(ContactType.SKYPE, "skype");
 //        resume.addContact(ContactType.TELEPHONE, "tel");

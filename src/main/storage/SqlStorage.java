@@ -41,14 +41,14 @@ public class SqlStorage implements Storage {
                 ps.setString(1, uuid);
                 ResultSet rs = ps.executeQuery();
                 while (rs.next()) {
-                    addContact(rs, r);
+                    addContact(r, rs);
                 }
             }
 
             try (PreparedStatement ps = conn.prepareStatement("select * from section where resume_uuid = ?")) {
                 ps.setString(1, uuid);
                 ResultSet rs = ps.executeQuery();
-                while (rs.next()); {
+                while (rs.next()) {
                     addSection(r, rs);
                 }
             }
@@ -122,7 +122,7 @@ public class SqlStorage implements Storage {
                 ResultSet rs = ps.executeQuery();
                 while (rs.next()) {
                     Resume resume = map.get(rs.getString("resume_uuid"));
-                    addContact(rs, resume);
+                    addContact(resume, rs);
                 }
             }
 
@@ -147,8 +147,7 @@ public class SqlStorage implements Storage {
         });
     }
 
-    private void addContact(ResultSet rs, Resume r) throws SQLException {
-
+    private void addContact(Resume r, ResultSet rs) throws SQLException {
         if (rs.getString("value") != null) {
             r.addContact(ContactType.valueOf(rs.getString("type").trim()), rs.getString("value").trim());
         }
@@ -156,7 +155,7 @@ public class SqlStorage implements Storage {
 
     private void addSection(Resume r, ResultSet rs) throws SQLException {
         if (rs.getString("value") != null) {
-            r.addSection(SectionType.valueOf(rs.getString("type").trim()), new TextSection(rs.getString("value")));
+            r.addSection(SectionType.valueOf(rs.getString("type").trim()), readFromSection(rs.getString("value")));
         }
     }
 
@@ -177,7 +176,7 @@ public class SqlStorage implements Storage {
             for (Map.Entry<SectionType, AbstractSection> e : r.getSections().entrySet()) {
                 ps.setString(1, r.getUuid());
                 ps.setString(2, e.getKey().name());
-                ps.setString(3, String.valueOf(e.getValue()));
+                ps.setString(3, writeToSection(String.valueOf(e.getValue())));
                 ps.addBatch();
             }
             ps.executeBatch();
@@ -199,5 +198,35 @@ public class SqlStorage implements Storage {
             ps.execute();
         }
     }
-}
 
+    private String writeToSection(String text) {
+        int start = 0;
+        for (int i = 0; i < text.length(); i++) {
+            if (text.charAt(i) == '\'') {
+                if (start == 0) start = i;
+                else text = text.substring(start + 1, i);
+            } else if (text.charAt(i) == '[' || text.charAt(i) == ']') {
+                if (start == 0) start = i;
+                else text = text.substring(start + 1, i);
+                text = text.replace(", ", "\n");
+            }
+        }
+        return text;
+    }
+
+    private AbstractSection readFromSection(String text) {
+        ArrayList list = new ArrayList();
+        if (text.contains("\n")) {
+            for (int i = 0; i < text.length(); i++) {
+                if (text.charAt(i) == '\n') {
+                    list.add(text.substring(0, i));
+                    text = text.substring(i + 1);
+                }
+            }
+            list.add(text);
+            return new ListSection(list);
+        } else {
+            return new TextSection(text);
+        }
+    }
+}
