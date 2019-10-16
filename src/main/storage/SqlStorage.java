@@ -202,13 +202,14 @@ public class SqlStorage implements Storage {
     private String writeToSection(String text) {
         int start = 0;
         for (int i = 0; i < text.length(); i++) {
-            if (text.charAt(i) == '\'') {
-                if (start == 0) start = i;
-                else text = text.substring(start + 1, i);
-            } else if (text.charAt(i) == '[' || text.charAt(i) == ']') {
-                if (start == 0) start = i;
-                else text = text.substring(start + 1, i);
-                text = text.replace(", ", "\n");
+            switch (text.charAt(i)) {
+                case '/':
+                    if (start == 0) start = i;
+                    else text = text.substring(start + 1, i);
+                case '[':
+                    if (start == 0) start = i;
+                    else text = text.substring(start + 1, i);
+                    text = text.replace(", ", "\n");
             }
         }
         return text;
@@ -216,17 +217,18 @@ public class SqlStorage implements Storage {
 
     private AbstractSection readFromSection(String text) {
         ArrayList list = new ArrayList();
-        if (text.contains("\n")) {
-            for (int i = 0; i < text.length(); i++) {
-                if (text.charAt(i) == '\n') {
-                    list.add(text.substring(0, i));
-                    text = text.substring(i + 1);
+        switch (text) {
+            case "\n":
+                for (int i = 0; i < text.length(); i++) {
+                    if (text.charAt(i) == '\n') {
+                        list.add(text.substring(0, i));
+                        text = text.substring(i + 1);
+                    }
                 }
-            }
-            list.add(text);
-            return new ListSection(list);
-        } else {
-            return new TextSection(text);
+                list.add(text);
+                return new ListSection(list);
+            default:
+                return new TextSection(text);
         }
     }
 }
