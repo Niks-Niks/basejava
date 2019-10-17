@@ -1,12 +1,11 @@
 package main.storage;
 
 import main.exception.NotExistStorageException;
+import main.exception.StorageException;
 import main.model.*;
 import main.sql.SqlHelper;
 
 import java.sql.*;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -155,7 +154,7 @@ public class SqlStorage implements Storage {
 
     private void addSection(Resume r, ResultSet rs) throws SQLException {
         if (rs.getString("value") != null) {
-            r.addSection(SectionType.valueOf(rs.getString("type").trim()), readFromSection(rs.getString("value")));
+            r.addSection(SectionType.valueOf(rs.getString("type").trim()), readFromSection(SectionType.valueOf(rs.getString("type").trim()), rs.getString("value")));
         }
     }
 
@@ -176,7 +175,7 @@ public class SqlStorage implements Storage {
             for (Map.Entry<SectionType, AbstractSection> e : r.getSections().entrySet()) {
                 ps.setString(1, r.getUuid());
                 ps.setString(2, e.getKey().name());
-                ps.setString(3, writeToSection(String.valueOf(e.getValue())));
+                ps.setString(3, writeToSection(e.getKey().name(), String.valueOf(e.getValue())));
                 ps.addBatch();
             }
             ps.executeBatch();
@@ -199,26 +198,27 @@ public class SqlStorage implements Storage {
         }
     }
 
-    private String writeToSection(String text) {
-        int start = 0;
-        for (int i = 0; i < text.length(); i++) {
-            switch (text.charAt(i)) {
-                case '/':
-                    if (start == 0) start = i;
-                    else text = text.substring(start + 1, i);
-                case '[':
-                    if (start == 0) start = i;
-                    else text = text.substring(start + 1, i);
-                    text = text.replace(", ", "\n");
-            }
+    private String writeToSection(String sectionType, String text) {
+        switch (SectionType.valueOf(sectionType)) {
+            case PERSONAL:
+            case OBJECTIVE:
+                return text.substring(text.indexOf("\'") + 1, (text.length() - 2));
+            case ACHIEVEMENT:
+            case QUALIFICATIONS:
+                return text.substring(text.indexOf('[') + 1, text.indexOf(']')).replace(", ", "\n");
+            default:
+                throw new StorageException("Error in writeToSection");
         }
-        return text;
     }
 
-    private AbstractSection readFromSection(String text) {
-        ArrayList list = new ArrayList();
-        switch (text) {
-            case "\n":
+    private AbstractSection readFromSection(SectionType type, String text) {
+        switch (type) {
+            case PERSONAL:
+            case OBJECTIVE:
+                return new TextSection(text);
+            case ACHIEVEMENT:
+            case QUALIFICATIONS:
+                ArrayList list = new ArrayList();
                 for (int i = 0; i < text.length(); i++) {
                     if (text.charAt(i) == '\n') {
                         list.add(text.substring(0, i));
@@ -228,7 +228,7 @@ public class SqlStorage implements Storage {
                 list.add(text);
                 return new ListSection(list);
             default:
-                return new TextSection(text);
+                throw new StorageException("Error in writeToSection");
         }
     }
 }

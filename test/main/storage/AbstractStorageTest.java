@@ -67,7 +67,7 @@ public class AbstractStorageTest {
         list.add(inList);
         list.add(inList1);
 
-        RESUME_1.addSection(SectionType.ACHIEVEMENT, new TextSection("first is first"));
+        RESUME_1.addSection(SectionType.PERSONAL, new TextSection("first is first"));
         RESUME_1.addSection(SectionType.OBJECTIVE, new TextSection("first is second"));
 //        RESUME_1.addSection(SectionType.EDUCATION, new OrganizationSection(
 //                new Organization("","",
@@ -102,7 +102,6 @@ public class AbstractStorageTest {
         Resume resume = new Resume(UUID_1, "fullName");
         resume.addContact(ContactType.LINKEDIN, "linkedIn");
         resume.addContact(ContactType.GITHUB, "GitHub");
-        RESUME_1.addSection(SectionType.ACHIEVEMENT, new TextSection("first is first"));
         RESUME_1.addSection(SectionType.OBJECTIVE, new TextSection("first is second"));
 //        resume.addContact(ContactType.MAIL, "main");
 //        resume.addContact(ContactType.SKYPE, "skype");
