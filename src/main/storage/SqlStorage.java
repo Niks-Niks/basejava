@@ -5,7 +5,10 @@ import main.exception.StorageException;
 import main.model.*;
 import main.sql.SqlHelper;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -175,7 +178,7 @@ public class SqlStorage implements Storage {
             for (Map.Entry<SectionType, AbstractSection> e : r.getSections().entrySet()) {
                 ps.setString(1, r.getUuid());
                 ps.setString(2, e.getKey().name());
-                ps.setString(3, writeToSection(e.getKey().name(), String.valueOf(e.getValue())));
+                ps.setString(3, writeToSection(e.getKey().name(), e.getValue()));
                 ps.addBatch();
             }
             ps.executeBatch();
@@ -198,14 +201,14 @@ public class SqlStorage implements Storage {
         }
     }
 
-    private String writeToSection(String sectionType, String text) {
+    private String writeToSection(String sectionType, AbstractSection text) {
         switch (SectionType.valueOf(sectionType)) {
             case PERSONAL:
             case OBJECTIVE:
-                return text.substring(text.indexOf("\'") + 1, (text.length() - 2));
+                return ((TextSection) text).getText();
             case ACHIEVEMENT:
             case QUALIFICATIONS:
-                return text.substring(text.indexOf('[') + 1, text.indexOf(']')).replace(", ", "\n");
+                return String.join("\n", ((ListSection) text).getList());
             default:
                 throw new StorageException("Error in writeToSection");
         }
