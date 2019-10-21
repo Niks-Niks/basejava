@@ -201,14 +201,14 @@ public class SqlStorage implements Storage {
         }
     }
 
-    private String writeToSection(String sectionType, AbstractSection text) {
+    private String writeToSection(String sectionType, AbstractSection section) {
         switch (SectionType.valueOf(sectionType)) {
             case PERSONAL:
             case OBJECTIVE:
-                return ((TextSection) text).getText();
+                return ((TextSection) section).getText();
             case ACHIEVEMENT:
             case QUALIFICATIONS:
-                return String.join("\n", ((ListSection) text).getList());
+                return String.join("\n", ((ListSection) section).getList());
             default:
                 throw new StorageException("Error in writeToSection");
         }
@@ -221,15 +221,11 @@ public class SqlStorage implements Storage {
                 return new TextSection(text);
             case ACHIEVEMENT:
             case QUALIFICATIONS:
-                ArrayList list = new ArrayList();
-                for (int i = 0; i < text.length(); i++) {
-                    if (text.charAt(i) == '\n') {
-                        list.add(text.substring(0, i));
-                        text = text.substring(i + 1);
-                    }
+                ArrayList<String> list = new ArrayList<>();
+                for (String q : text.split("\n")) {
+                    list.add(q);
                 }
-                list.add(text);
-                return new ListSection(list);
+                return new ListSection();
             default:
                 throw new StorageException("Error in writeToSection");
         }
