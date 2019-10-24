@@ -1,0 +1,91 @@
+* {
+    margin: 0;
+}
+
+body {
+    height: 100%;
+    min-width: 900px;
+    background: url("../img/first.jfif") repeat;
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+.line {
+    width: available;
+    height: 3px;
+    background: darkgrey;
+}
+
+H1, H2, H3, H4, H5, H6, dt {
+    font-weight: 500;
+    text-transform: uppercase;
+    color: #aabcfe;
+}
+
+span {
+    text-decoration: underline;
+}
+
+header {
+    overflow: hidden;
+
+}
+
+header .first {
+    padding-left: 25px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+table {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+    font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+    font-size: 14px;
+    background: white;
+    max-width: 70%;
+    width: 70%;
+    border-collapse: collapse;
+    text-align: left;
+    box-shadow: 2px 9px 22px 5px rgba(0, 0, 0, 1);
+}
+
+th {
+    font-size: 13px;
+    font-weight: normal;
+    background: #b9c9fe;
+    border-top: 4px solid #aabcfe;
+    border-bottom: 1px solid #fff;
+    color: #039;
+    padding: 8px;
+}
+
+td {
+    background: #e8edff;
+    border-bottom: 1px solid #fff;
+    color: #669;
+    border-top: 1px solid transparent;
+    padding: 8px;
+}
+
+tr:hover td {
+    background: #ccddff;
+}
+
+footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+footer H1 {
+    padding-left: 25px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}

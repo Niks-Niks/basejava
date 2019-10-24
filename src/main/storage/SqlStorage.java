@@ -208,7 +208,7 @@ public class SqlStorage implements Storage {
                 return ((TextSection) section).getText();
             case ACHIEVEMENT:
             case QUALIFICATIONS:
-                return String.join("\n", ((ListSection) section).getList());
+                 return String.join("\n", ((ListSection) section).getList());
             default:
                 throw new StorageException("Error in writeToSection");
         }
