@@ -2,51 +2,74 @@
     margin: 0;
 }
 
-body {
+html, body {
     height: 100%;
     min-width: 900px;
     background: url("../img/first.jfif") repeat;
 }
 
-html {
-    position: relative;
-    min-height: 100%;
-}
-
 .line {
-    width: available;
+    width: 100%;
     height: 3px;
     background: darkgrey;
 }
 
-H1, H2, H3, H4, H5, H6, dt {
-    font-weight: 500;
-    text-transform: uppercase;
-    color: #aabcfe;
+section{
+    margin-left: 3%;
 }
 
-span {
-    text-decoration: underline;
+.btn {
+    width: 70%;
+    height: 50px;
+    background: #b9c9fe;
+}
+
+h3, h1, h4{
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+input{
+}
+
+dt{
+    width: 200px;
+    display: inline-block;
+    margin-bottom: 10px;
+}
+
+dd{
+    display: inline-block;
+}
+
+.main_btn{
+    height: 10%;
+    width: 30%;
 }
 
 header {
     overflow: hidden;
-
 }
 
 header .first {
     padding-left: 25px;
     padding-top: 10px;
     padding-bottom: 10px;
+    font-size: 15px;
+    font-weight: normal;
+    border-top: 4px solid #aabcfe;
+}
+
+.centre {
+    width: 100%;
+    display: table;
+    margin: 12% auto;
+    text-align: center;
 }
 
 table {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    margin-right: -50%;
-    transform: translate(-50%, -50%);
-    font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+    margin: 0px auto;
+    font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif, serif;
     font-size: 14px;
     background: white;
     max-width: 70%;
@@ -79,8 +102,8 @@ tr:hover td {
 }
 
 footer {
-    position: absolute;
-    bottom: 0;
+    margin-top: 50px;
+    height: auto;
     width: 100%;
 }
 

@@ -13,5 +13,4 @@
         <url-pattern>/resume</url-pattern>
     </servlet-mapping>
 
-
 </web-app>

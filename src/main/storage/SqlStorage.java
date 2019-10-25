@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -208,7 +209,26 @@ public class SqlStorage implements Storage {
                 return ((TextSection) section).getText();
             case ACHIEVEMENT:
             case QUALIFICATIONS:
-                 return String.join("\n", ((ListSection) section).getList());
+                return String.join("\n", ((ListSection) section).getList());
+            case EXPERIENCE:
+            case EDUCATION:
+                String hp = "";
+                String url = "";
+                LocalDate start = null;
+                LocalDate end = null;
+                String title = "";
+                String des = "";
+                for (Organization q : ((OrganizationSection) section).getList()) {
+                    hp = "write" + q.getHomePage().getHomePage();
+                    url = q.getHomePage().getLink();
+                    for (Organization.Place place : q.getList()) {
+                        start = (place.getDateStart() == null || place.getDateStart().toString() == "0") ? (LocalDate.parse("1,1,1")) : place.getDateStart();
+                        end = (place.getDateEnd() == null || place.getDateEnd().toString() == "0") ? (LocalDate.parse("1,1,1")) : place.getDateEnd();
+                        title = place.getTitle();
+                        des = place.getDescription();
+                    }
+                }
+                return new OrganizationSection(new Organization(hp, url, new Organization.Place(start, end, title, des))).toString();
             default:
                 throw new StorageException("Error in writeToSection");
         }
@@ -226,6 +246,11 @@ public class SqlStorage implements Storage {
                     list.add(q);
                 }
                 return new ListSection();
+            case EDUCATION:
+            case EXPERIENCE:
+                List<Organization.Place> place = new ArrayList<>();
+                place.add(new Organization.Place(LocalDate.of(2019, 9, 9), LocalDate.of(2019, 9, 9), text, text));
+                return new OrganizationSection(new Organization(new Organization.Link(text, text), place));
             default:
                 throw new StorageException("Error in writeToSection");
         }
