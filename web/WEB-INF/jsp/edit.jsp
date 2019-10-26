@@ -29,50 +29,50 @@
         <h3>Секции:</h3>
         <c:forEach var="type" items="<%=SectionType.values()%>">
             <c:set var="sectionValue" value="${resume.getSection(type)}"/>
-            <jsp:useBean id="type" type="main.model.SectionType"/>
-<%--            <jsp:useBean id="sectionValue" type="main.model.AbstractSection"/>--%>
+<%--            <jsp:useBean id="type" type="main.model.SectionType"/>--%>
+            <jsp:useBean id="sectionValue" type="main.model.AbstractSection"/>
             <h4>${type.title}</h4>
             <h4>${resume.getSection(type)}</h4>
-<%--            <h4><%=sectionValue%>></h4>--%>
             <c:choose>
                 <c:when test="${type == 'PERSONAL'}">
-<%--                    <input type="text" name="${type}" size="40" value="<%=((TextSection) sectionValue).getText()%>"/>--%>
+                    <input type="text" name="${type}" size="40" value="<%=((TextSection) sectionValue).getText()%>"/>
                 </c:when>
                 <c:when test="${type == 'OBJECTIVE'}">
-<%--                    <input type="text" name="${type}" size="40" value="<%=((TextSection) sectionValue).getText()%>"/>--%>
+                    <input type="text" name="${type}" size="40" value="<%=((TextSection) sectionValue).getText()%>"/>
                 </c:when>
                 <c:when test="${type == 'ACHIEVEMENT' || type == 'QUALIFICATIONS'}">
-<%--                    <textarea name='${type}' cols=60 rows=5><%=((ListSection) sectionValue).getList()%></textarea>--%>
+                    <textarea name='${type}' cols=60 rows=5><%=((ListSection) sectionValue).getList()%></textarea>
                 </c:when>
                 <c:when test="${type == 'EDUCATION' || type == 'EXPERIENCE'}">
-<%--                    <c:forEach var="organization" items="<%=((OrganizationSection) sectionValue).getList()%>">--%>
-<%--                        <dl>--%>
-<%--                            <dt>Название:</dt>--%>
-<%--                            <dd><input type="text" name="${type}_title" size="40" value="${organization.homePage.homePage}"/></dd>--%>
-<%--                        </dl>--%>
-<%--                        <dl>--%>
-<%--                            <dt>Ссылка:</dt>--%>
-<%--                            <dd><input type="text" name="${type}_url" size="40" value="${organization.homePage.link}"/></dd>--%>
-<%--                        </dl>--%>
-<%--                        <c:forEach var="place" items="${organization.list}">--%>
-<%--                            <dl>--%>
-<%--                                <dt>Дата начала:</dt>--%>
-<%--                                <dd><input type="text" name="${type}_sD" size="40" value="${place.dateStart}"/></dd>--%>
-<%--                            </dl>--%>
-<%--                            <dl>--%>
-<%--                                <dt>Конечная дата:</dt>--%>
-<%--                                <dd><input type="text" name="${type}_eD" size="40" value="${place.dateEnd}"/></dd>--%>
-<%--                            </dl>--%>
-<%--                            <dl>--%>
-<%--                                <dt>Должность:</dt>--%>
-<%--                                <dd><input type="text" name="${type}_D" size="40" value="${place.title}"/></dd>--%>
-<%--                            </dl>--%>
-<%--                            <dl>--%>
-<%--                                <dt>Описание:</dt>--%>
-<%--                                <dd><input type="text" name="${type}_Des" size="40" value="${place.description}"/></dd>--%>
-<%--                            </dl>--%>
-<%--                        </c:forEach>--%>
-<%--                    </c:forEach>--%>
+                    <c:forEach var="organization" items="<%=((OrganizationSection) sectionValue).getList()%>">
+                        <dl>
+                            <dt>Название:</dt>
+                            <dd><input type="text" name="${type}title" size="40" value="${organization.homePage.homePage}"/></dd>
+                        </dl>
+                        <dl>
+                            <dt>Ссылка:</dt>
+                            <dd><input type="text" name="${type}url" size="40" value="${organization.homePage.link}"/></dd>
+                        </dl>
+                        <c:forEach var="place" items="${organization.list}">
+                            <jsp:useBean id="place" type="main.model.Organization.Place"/>
+                            <dl>
+                                <dt>Дата начала:</dt>
+                                <dd><input type="text" name="${type}start" size="40" value="<%=place.getDateStart()%>"/></dd>
+                            </dl>
+                            <dl>
+                                <dt>Конечная дата:</dt>
+                                <dd><input type="text" name="${type}end" size="40" value="<%=place.getDateEnd()%>"/></dd>
+                            </dl>
+                            <dl>
+                                <dt>Должность:</dt>
+                                <dd><input type="text" name="${type}name" size="40" value="<%=place.getTitle()%>"/></dd>
+                            </dl>
+                            <dl>
+                                <dt>Описание:</dt>
+                                <dd><input type="text" name="${type}des" size="40" value="<%=place.getDescription()%>"/></dd>
+                            </dl>
+                        </c:forEach>
+                    </c:forEach>
                 </c:when>
             </c:choose>
         </c:forEach>

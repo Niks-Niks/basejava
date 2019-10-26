@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class ResumeServlet extends HttpServlet {
@@ -44,6 +43,7 @@ public class ResumeServlet extends HttpServlet {
 
         for (SectionType type : SectionType.values()) {//TODO all
             String value = request.getParameter(type.name());
+            String[] values = request.getParameterValues(type.name());
             if (!createNew) {
                 r.getSections().remove(type);
             } else {
@@ -54,18 +54,20 @@ public class ResumeServlet extends HttpServlet {
                         break;
                     case QUALIFICATIONS:
                     case ACHIEVEMENT:
-                        r.addSection(type, new ListSection(Arrays.asList(value.split("\n"))));//TODO
+                        r.addSection(type, new ListSection(value));//TODO
                         break;
                     case EDUCATION:
                     case EXPERIENCE:
-                        String url = request.getParameter(value + "_url");
-                        String title = request.getParameter(value + "_title");
-                        String startData = request.getParameter(value + "_sD");
-                        String endData = request.getParameter(value + "_eD");
-                        String Dol = request.getParameter(value + "_D");
-                        String Des = request.getParameter(value + "_Des");
+                        List<Organization> org = new ArrayList<>();
+                        String title = request.getParameter(type.name() + "title");
+                        String url = request.getParameter(type.name() + "url");
+                        String dateS = request.getParameter(type.name() + "start");
+                        String dateE = request.getParameter(type.name() + "end");
+                        String name = request.getParameter(type.name() + "name");
+                        String des = request.getParameter(type.name() + "des");
+                        org.add(new Organization(url, title, new Organization.Place(LocalDate.of(2010, 10, 10), LocalDate.of(2010, 10, 10), name, des)));
 
-                        r.addSection(type, new OrganizationSection(new Organization(title, url, new Organization.Place(LocalDate.of(2010, 1, 1), LocalDate.of(2010, 1, 1), Dol, Des))));
+                        r.addSection(type, new OrganizationSection(org));
                         break;
                 }
             }
@@ -110,18 +112,24 @@ public class ResumeServlet extends HttpServlet {
                         case OBJECTIVE:
                             if (section == null) {
                                 r.addSection(sectionType, new TextSection(""));
-                            }
+                            } 
+                            break;
                         case ACHIEVEMENT:
                         case QUALIFICATIONS:
                             if (section == null) {
-                                r.addSection(sectionType, new ListSection(" "));
+                                List list = new ArrayList();
+                                list.add("empty list");
+                                r.addSection(sectionType, new ListSection(list));
                             }
+                            break;
                         case EDUCATION:
                         case EXPERIENCE:
                             List<Organization.Place> place = new ArrayList<>();
                             place.add(new Organization.Place(LocalDate.of(2017, 1, 1), LocalDate.of(2017, 1, 1), "empty", "empty"));
                             r.addSection(sectionType, new OrganizationSection(new Organization(new Organization.Link("empty", "empty"), place)));
+                            break;
                     }
+                    storage.update(r);
                     break;
                 }
                 getRequestDispatcher(request, response, r, ("view".equals(action) ? "/WEB-INF/jsp/view.jsp" : "/WEB-INF/jsp/edit.jsp"));

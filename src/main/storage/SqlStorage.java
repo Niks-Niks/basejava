@@ -218,17 +218,23 @@ public class SqlStorage implements Storage {
                 LocalDate end = null;
                 String title = "";
                 String des = "";
-                for (Organization q : ((OrganizationSection) section).getList()) {
-                    hp = "write" + q.getHomePage().getHomePage();
-                    url = q.getHomePage().getLink();
-                    for (Organization.Place place : q.getList()) {
-                        start = (place.getDateStart() == null || place.getDateStart().toString() == "0") ? (LocalDate.parse("1,1,1")) : place.getDateStart();
-                        end = (place.getDateEnd() == null || place.getDateEnd().toString() == "0") ? (LocalDate.parse("1,1,1")) : place.getDateEnd();
-                        title = place.getTitle();
-                        des = place.getDescription();
+
+                OrganizationSection orgS = (OrganizationSection) section;
+                List<Organization> org = new ArrayList<>();
+                for (Organization O : orgS.getList()) {
+                    List<Organization.Place> place = new ArrayList<>();
+                    hp = O.getHomePage().getHomePage();
+                    url = O.getHomePage().getLink();
+                    for (Organization.Place p : O.getList()) {
+                        start = p.getDateStart();
+                        end = p.getDateEnd();
+                        title = p.getTitle();
+                        des = p.getDescription();
+                        place.add(new Organization.Place(start, end, title, des));
                     }
+                    org.add(new Organization(new Organization.Link(hp, url), place));
                 }
-                return new OrganizationSection(new Organization(hp, url, new Organization.Place(start, end, title, des))).toString();
+                return new OrganizationSection(org).toString();
             default:
                 throw new StorageException("Error in writeToSection");
         }
@@ -245,12 +251,26 @@ public class SqlStorage implements Storage {
                 for (String q : text.split("\n")) {
                     list.add(q);
                 }
-                return new ListSection();
+                return new ListSection(list);
             case EDUCATION:
             case EXPERIENCE:
-                List<Organization.Place> place = new ArrayList<>();
-                place.add(new Organization.Place(LocalDate.of(2019, 9, 9), LocalDate.of(2019, 9, 9), text, text));
-                return new OrganizationSection(new Organization(new Organization.Link(text, text), place));
+                String link = text.substring(text.indexOf("link->") + 6, text.indexOf("), ") + 1);
+                String Link_title = link.substring(2, link.indexOf(","));
+                String Link_url = link.substring(link.indexOf(",") + 2, link.length() - 2);
+                ArrayList<Organization.Place> listPlace = new ArrayList<>();
+                for (int i = 0; i < text.length(); i++) {
+                    if (text.contains("Place")) {
+                        text = text.substring(text.indexOf("Place"));
+                        System.out.println("============================" + text);
+                        String Place_dateS = text.substring(text.indexOf("dateStart") + 10, text.indexOf(", "));
+                        String Place_dateE = text.substring(text.indexOf("dateEnd") + 8, text.indexOf(", t"));
+                        String Place_title = text.substring(text.indexOf("title=") + 7, text.indexOf(", des") - 1);
+                        String Place_des = text.substring(text.indexOf("description=") + 13, text.indexOf("'}"));
+                        listPlace.add(new Organization.Place(LocalDate.parse(Place_dateS), LocalDate.parse(Place_dateE), Place_title, Place_des));
+                        text = text.substring(10);
+                    }
+                }
+                return new OrganizationSection(new Organization(Link_url, Link_title, listPlace));
             default:
                 throw new StorageException("Error in writeToSection");
         }

@@ -32,7 +32,7 @@
 
         <c:forEach var="type" items="<%=SectionType.values()%>">
             <h4>${type.title}</h4>
-            <c:set var="section" value="${resume.getSection(type)}"/>
+<%--            <c:set var="section" value="${resume.getSection(type)}"/>--%>
             <c:choose>
                 <c:when test="${type == 'PERSONAL'}">
                     <input type="text" name="${type}" size="40"/>
@@ -49,27 +49,27 @@
                 <c:when test="${type == 'EDUCATION' || type == 'EXPERIENCE'}">
                     <dl>
                         <dt>Название:</dt>
-                        <dd><input type="text" name="${type}_title" size="40"/></dd>
+                        <dd><input type="text" name="${type}title" size="40"/></dd>
                     </dl>
                     <dl>
                         <dt>Ссылка:</dt>
-                        <dd><input type="text" name="${type}_url" size="40"/></dd>
+                        <dd><input type="text" name="${type}url" size="40"/></dd>
                     </dl>
                     <dl>
                         <dt>Дата начала:</dt>
-                        <dd><input type="text" name="${type}_sD" size="40"/></dd>
+                        <dd><input type="text" name="${type}start" size="40"/></dd>
                     </dl>
                     <dl>
                         <dt>Конечная дата:</dt>
-                        <dd><input type="text" name="${type}_eD" size="40"/></dd>
+                        <dd><input type="text" name="${type}end" size="40"/></dd>
                     </dl>
                     <dl>
                         <dt>Должность:</dt>
-                        <dd><input type="text" name="${type}_D" size="40"/></dd>
+                        <dd><input type="text" name="${type}name" size="40"/></dd>
                     </dl>
                     <dl>
                         <dt>Описание:</dt>
-                        <dd><input type="text" name="${type}_Des" size="40"/></dd>
+                        <dd><input type="text" name="${type}des" size="40"/></dd>
                     </dl>
                     <%--                    <button class="addElse">Добавить еще должность</button>--%>
                 </c:when>

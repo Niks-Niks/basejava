@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -38,6 +39,7 @@ public class AbstractStorageTest {
     protected AbstractStorageTest(Storage storage) {
         this.storage = storage;
     }
+
 
     static {
 //        RESUME_1.addContact(ContactType.LINKEDIN, "linkedIn");
@@ -69,17 +71,17 @@ public class AbstractStorageTest {
 
         RESUME_1.addSection(SectionType.PERSONAL, new TextSection("first is first"));
         RESUME_1.addSection(SectionType.OBJECTIVE, new TextSection("first is second"));
-//        RESUME_1.addSection(SectionType.EDUCATION, new OrganizationSection(
-//                new Organization("","",
-//                        new Organization.Place(LocalDate.of(2020, 1, 1), LocalDate.of(2020, 12, 1), "title", "description"),
-//                        new Organization.Place(LocalDate.of(2020, 1, 1), LocalDate.of(2020, 12, 1), "Title_2", "description")
-//                )));
+        RESUME_1.addSection(SectionType.EDUCATION, new OrganizationSection(
+                new Organization("education","ed",
+                        new Organization.Place(LocalDate.of(2020, 1, 1), LocalDate.of(2020, 12, 1), "ed", "ed"),
+                        new Organization.Place(LocalDate.of(2020, 1, 1), LocalDate.of(2020, 12, 1), "ed_2", "ed_2")
+                )));
         RESUME_1.addSection(SectionType.ACHIEVEMENT, new ListSection(list));
         RESUME_1.addSection(SectionType.QUALIFICATIONS, new ListSection(list));
-//        RESUME_1.addSection(SectionType.EXPERIENCE, new OrganizationSection(
-//                new Organization("Link", "HomePage",
-//                        new Organization.Place(LocalDate.of(2020, 1, 1), LocalDate.of(2020, 12, 1), "title", "description"),
-//                        new Organization.Place(LocalDate.of(2020, 1, 1), LocalDate.of(2020, 12, 1), "Title_2", "description"))));
+        RESUME_1.addSection(SectionType.EXPERIENCE, new OrganizationSection(
+                new Organization("ex", "ex",
+                        new Organization.Place(LocalDate.of(2020, 1, 1), LocalDate.of(2020, 12, 1), "ex", "ex"),
+                        new Organization.Place(LocalDate.of(2020, 1, 1), LocalDate.of(2020, 12, 1), "ex_2", "ex_2"))));
 
     }
 
