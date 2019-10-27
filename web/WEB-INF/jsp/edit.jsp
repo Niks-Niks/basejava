@@ -1,6 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page import="javax.xml.soap.Text" %>
 <%@ page import="main.model.*" %>
+<%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <html>
@@ -29,16 +30,12 @@
         <h3>Секции:</h3>
         <c:forEach var="type" items="<%=SectionType.values()%>">
             <c:set var="sectionValue" value="${resume.getSection(type)}"/>
-<%--            <jsp:useBean id="type" type="main.model.SectionType"/>--%>
+            <jsp:useBean id="type" type="main.model.SectionType"/>
             <jsp:useBean id="sectionValue" type="main.model.AbstractSection"/>
             <h4>${type.title}</h4>
-            <h4>${resume.getSection(type)}</h4>
             <c:choose>
-                <c:when test="${type == 'PERSONAL'}">
-                    <input type="text" name="${type}" size="40" value="<%=((TextSection) sectionValue).getText()%>"/>
-                </c:when>
-                <c:when test="${type == 'OBJECTIVE'}">
-                    <input type="text" name="${type}" size="40" value="<%=((TextSection) sectionValue).getText()%>"/>
+                <c:when test="${type == 'PERSONAL' || type == 'OBJECTIVE'}">
+                    <input type="text" name="${type}" size="40" value="<%=((TextSection)sectionValue).getText()%>"/>
                 </c:when>
                 <c:when test="${type == 'ACHIEVEMENT' || type == 'QUALIFICATIONS'}">
                     <textarea name='${type}' cols=60 rows=5><%=((ListSection) sectionValue).getList()%></textarea>

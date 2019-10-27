@@ -261,7 +261,6 @@ public class SqlStorage implements Storage {
                 for (int i = 0; i < text.length(); i++) {
                     if (text.contains("Place")) {
                         text = text.substring(text.indexOf("Place"));
-                        System.out.println("============================" + text);
                         String Place_dateS = text.substring(text.indexOf("dateStart") + 10, text.indexOf(", "));
                         String Place_dateE = text.substring(text.indexOf("dateEnd") + 8, text.indexOf(", t"));
                         String Place_title = text.substring(text.indexOf("title=") + 7, text.indexOf(", des") - 1);

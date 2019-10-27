@@ -32,7 +32,8 @@
 
         <c:forEach var="type" items="<%=SectionType.values()%>">
             <h4>${type.title}</h4>
-<%--            <c:set var="section" value="${resume.getSection(type)}"/>--%>
+            <%--            <c:set var="section" value="${resume.getSection(type)}"/>--%>
+            <jsp:useBean id="type" type="main.model.SectionType"/>
             <c:choose>
                 <c:when test="${type == 'PERSONAL'}">
                     <input type="text" name="${type}" size="40"/>
@@ -71,11 +72,13 @@
                         <dt>Описание:</dt>
                         <dd><input type="text" name="${type}des" size="40"/></dd>
                     </dl>
-                    <%--                    <button class="addElse">Добавить еще должность</button>--%>
+<%--                    <button class="addElse">Добавить еще должность</button>--%>
                 </c:when>
-                <%--                <button class="addE">Добавить еще ${type}</button>--%>
+<%--                <button class="addE">Добавить еще <%=type%>></button>--%>
             </c:choose>
         </c:forEach>
+        <br/>
+        <hr/>
         <button type="submit">Сохранить</button>
         <button onclick="window.history.back()">Отменить</button>
     </form>
