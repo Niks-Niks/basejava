@@ -32,14 +32,14 @@
         <c:choose>
         <c:when test="${type == 'PERSONAL' || type == 'OBJECTIVE'}">
     <dl>
-        <dt><h2><dt>${type.title}</dt></h2></dt>
+    <dt><h2>${type.title}</h2></dt>
         <dd><%=((TextSection) sectionValue).getText()%>
         </dd>
     </dl>
     </c:when>
     <c:when test="${type == 'ACHIEVEMENT' || type == 'QUALIFICATIONS'}">
         <dl>
-            <dt><h2><dt>${type.title}</dt></h2></dt>
+            <dt><h2>${type.title}</h2></dt>
             <dd><%=((ListSection) sectionValue).getList()%>
             </dd>
         </dl>
@@ -52,32 +52,32 @@
                 </h2>
             </dl>
             <dl>
-                <dt>Название:</dt>
+                <dt style="margin-left: 35px">Название:</dt>
                 <dd>${organization.homePage.homePage}</dd>
             </dl>
             <dl>
-                <dt>Ссылка:</dt>
+                <dt style="margin-left: 35px">Ссылка:</dt>
                 <dd>${organization.homePage.link}</dd>
             </dl>
             <c:forEach var="place" items="${organization.list}">
                 <jsp:useBean id="place" type="main.model.Organization.Place"/>
                 <dl>
-                    <dt>Дата начала:</dt>
+                    <dt style="margin-left: 35px">Дата начала:</dt>
                     <dd><%=place.getDateStart()%>
                     </dd>
                 </dl>
                 <dl>
-                    <dt>Конечная дата:</dt>
+                    <dt style="margin-left: 35px">Конечная дата:</dt>
                     <dd><%=place.getDateEnd()%>
                     </dd>
                 </dl>
                 <dl>
-                    <dt>Должность:</dt>
+                    <dt style="margin-left: 35px">Должность:</dt>
                     <dd><%=place.getTitle()%>
                     </dd>
                 </dl>
                 <dl>
-                    <dt class="margin">Описание:</dt>
+                    <dt style="margin-left: 35px">Описание:</dt>
                     <dd><%=place.getDescription()%>
                     </dd>
                 </dl>

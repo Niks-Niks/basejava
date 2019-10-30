@@ -38,27 +38,32 @@
                     <input type="text" name="${type}" size="40" value="<%=((TextSection)sectionValue).getText()%>"/>
                 </c:when>
                 <c:when test="${type == 'ACHIEVEMENT' || type == 'QUALIFICATIONS'}">
-                    <textarea name='${type}' cols=60 rows=5><%=((ListSection) sectionValue).getList()%></textarea>
+                    <textarea name='${type}' cols=60
+                              rows=5><%=((ListSection) sectionValue).getList().toString().replace("[", "").replace("]", "").replace(" ", "\n")%></textarea>
                 </c:when>
                 <c:when test="${type == 'EDUCATION' || type == 'EXPERIENCE'}">
                     <c:forEach var="organization" items="<%=((OrganizationSection) sectionValue).getList()%>">
                         <dl>
                             <dt>Название:</dt>
-                            <dd><input type="text" name="${type}title" size="40" value="${organization.homePage.homePage}"/></dd>
+                            <dd><input type="text" name="${type}title" size="40"
+                                       value="${organization.homePage.homePage}"/></dd>
                         </dl>
                         <dl>
                             <dt>Ссылка:</dt>
-                            <dd><input type="text" name="${type}url" size="40" value="${organization.homePage.link}"/></dd>
+                            <dd><input type="text" name="${type}url" size="40" value="${organization.homePage.link}"/>
+                            </dd>
                         </dl>
                         <c:forEach var="place" items="${organization.list}">
                             <jsp:useBean id="place" type="main.model.Organization.Place"/>
                             <dl>
                                 <dt>Дата начала:</dt>
-                                <dd><input type="text" name="${type}start" size="40" value="<%=place.getDateStart()%>"/></dd>
+                                <dd><input type="text" name="${type}start" size="40" value="<%=place.getDateStart()%>"/>
+                                </dd>
                             </dl>
                             <dl>
                                 <dt>Конечная дата:</dt>
-                                <dd><input type="text" name="${type}end" size="40" value="<%=place.getDateEnd()%>"/></dd>
+                                <dd><input type="text" name="${type}end" size="40" value="<%=place.getDateEnd()%>"/>
+                                </dd>
                             </dl>
                             <dl>
                                 <dt>Должность:</dt>
@@ -66,7 +71,8 @@
                             </dl>
                             <dl>
                                 <dt>Описание:</dt>
-                                <dd><input type="text" name="${type}des" size="40" value="<%=place.getDescription()%>"/></dd>
+                                <dd><input type="text" name="${type}des" size="40" value="<%=place.getDescription()%>"/>
+                                </dd>
                             </dl>
                         </c:forEach>
                     </c:forEach>

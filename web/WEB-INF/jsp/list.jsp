@@ -10,7 +10,7 @@
 </head>
 <body>
 <jsp:include page="fragments/header.jsp"/>
-<section>
+<section class="section">
     <div class="centre">
         <a href="resume?action=add"><button class="btn">Add new resume</button></a>
         <table border="1" cellpadding="8" cellspacing="0">

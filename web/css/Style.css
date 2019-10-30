@@ -5,17 +5,24 @@
 html, body {
     height: 100%;
     min-width: 900px;
-    background: url("../img/first.jfif") repeat;
+    background: #c3c3c3;
+    overflow-x: hidden;
 }
 
 .line {
-    width: 100%;
+    width: 103%;
     height: 3px;
+    margin-left: -3%;
     background: darkgrey;
+    padding: 0;
 }
 
-section{
+form {
     margin-left: 3%;
+}
+
+section {
+    height: auto;
 }
 
 .btn {
@@ -24,26 +31,30 @@ section{
     background: #b9c9fe;
 }
 
-h3, h1, h4{
+h3, h1, h4 {
     margin-bottom: 20px;
     margin-top: 20px;
 }
 
 
-dt{
+dt {
     width: 200px;
     display: inline-block;
     margin-bottom: 10px;
     margin-left: 20px;
 }
 
-dd{
+dd {
     display: inline-block;
 }
 
-.main_btn{
+.main_btn {
     height: 10%;
     width: 30%;
+}
+
+.margin {
+    margin-left: 1%;
 }
 
 header {
@@ -56,23 +67,29 @@ header .first {
     padding-bottom: 10px;
     font-size: 15px;
     font-weight: normal;
-    border-top: 4px solid #aabcfe;
+}
+
+.section {
+    height: 70%;
+    position: relative;
 }
 
 .centre {
     width: 100%;
     display: table;
-    margin: 12% auto;
     text-align: center;
+    position: absolute;
+    top: 50%;
+    transform: translate(0, -50%);
 }
 
 table {
-    margin: 0px auto;
+    margin: auto;
     font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif, serif;
     font-size: 14px;
     background: white;
     max-width: 70%;
-    width: 70%;
+    width: 80%;
     border-collapse: collapse;
     text-align: left;
     box-shadow: 2px 9px 22px 5px rgba(0, 0, 0, 1);
@@ -102,8 +119,6 @@ tr:hover td {
 
 footer {
     margin-top: 50px;
-    height: auto;
-    width: 100%;
 }
 
 footer H1 {

@@ -46,25 +46,36 @@ public class ResumeServlet extends HttpServlet {
                 case PERSONAL:
                     if (value != null) {
                         r.addSection(type, new TextSection(value));
-                    } else r.addSection(type, new TextSection(" "));
+                    } else r.addSection(type, new TextSection());
                     break;
                 case QUALIFICATIONS:
                 case ACHIEVEMENT:
+                    List<String> list = new ArrayList<>();
+                    list.add(value);
                     if (value != null) {
-                        r.addSection(type, new ListSection(value));
-                    } else r.addSection(type, new ListSection(""));
+                        r.addSection(type, new ListSection(list));
+                    } else r.addSection(type, new ListSection());
                     break;
                 case EXPERIENCE:
                 case EDUCATION:
                     List<Organization> org = new ArrayList<>();
-                    String title = request.getParameter(type.name() + "title");
-                    String url = request.getParameter(type.name() + "url");
-                    String dateS = request.getParameter(type.name() + "start");
-                    String dateE = request.getParameter(type.name() + "end");
-                    String name = request.getParameter(type.name() + "name");
-                    String des = request.getParameter(type.name() + "des");
+                    String title = isEmpty(type.name() + "title", type, request);
+                    String url = isEmpty(type.name() + "url", type, request);
 
-                    org.add(new Organization(url, title, new Organization.Place(LocalDate.parse(dateS), LocalDate.parse(dateE), name, des)));
+                    String name = isEmpty(type.name() + "name", type, request);
+                    String des = isEmpty(type.name() + "des", type, request);
+                    String dateS = isEmpty(type.name() + "start", type, request);
+                    String dateE = isEmpty(type.name() + "end", type, request);
+                    LocalDate start;
+                    LocalDate end;
+                    try {
+                        start = LocalDate.parse(dateS);
+                        end = LocalDate.parse(dateE);
+                    } catch (Exception e) {
+                        start = LocalDate.now();
+                        end = LocalDate.now();
+                    }
+                    org.add(new Organization(url, title, new Organization.Place(start, end, name, des)));
 
                     r.addSection(type, new OrganizationSection(org));
 
@@ -115,5 +126,9 @@ public class ResumeServlet extends HttpServlet {
     private void getRequestDispatcher(HttpServletRequest request, HttpServletResponse response, Resume r, String action) throws ServletException, IOException {
         request.setAttribute("resume", r);
         request.getRequestDispatcher(action).forward(request, response);
+    }
+
+    private String isEmpty(String check, SectionType sectionType, HttpServletRequest request) {
+        return request.getParameter((check == null || check == "") ? sectionType.toString() : check);
     }
 }

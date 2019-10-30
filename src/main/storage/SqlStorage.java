@@ -212,24 +212,17 @@ public class SqlStorage implements Storage {
                 return String.join("\n", ((ListSection) section).getList());
             case EXPERIENCE:
             case EDUCATION:
-                String hp = "";
-                String url = "";
-                LocalDate start = null;
-                LocalDate end = null;
-                String title = "";
-                String des = "";
-
                 OrganizationSection orgS = (OrganizationSection) section;
                 List<Organization> org = new ArrayList<>();
                 for (Organization O : orgS.getList()) {
                     List<Organization.Place> place = new ArrayList<>();
-                    hp = O.getHomePage().getHomePage();
-                    url = O.getHomePage().getLink();
+                    String hp = O.getHomePage().getHomePage();
+                    String url = O.getHomePage().getLink();
                     for (Organization.Place p : O.getList()) {
-                        start = p.getDateStart();
-                        end = p.getDateEnd();
-                        title = p.getTitle();
-                        des = p.getDescription();
+                        LocalDate start = p.getDateStart();
+                        LocalDate end = p.getDateEnd();
+                        String title = p.getTitle();
+                        String des = p.getDescription();
                         place.add(new Organization.Place(start, end, title, des));
                     }
                     org.add(new Organization(new Organization.Link(hp, url), place));
