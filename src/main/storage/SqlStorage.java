@@ -4,6 +4,7 @@ import main.exception.NotExistStorageException;
 import main.exception.StorageException;
 import main.model.*;
 import main.sql.SqlHelper;
+import main.util.JsonParser;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -158,7 +159,7 @@ public class SqlStorage implements Storage {
 
     private void addSection(Resume r, ResultSet rs) throws SQLException {
         if (rs.getString("value") != null) {
-            r.addSection(SectionType.valueOf(rs.getString("type").trim()), readFromSection(SectionType.valueOf(rs.getString("type").trim()), rs.getString("value")));
+            r.addSection(SectionType.valueOf(rs.getString("type").trim()), JsonParser.read(rs.getString("value").trim(), AbstractSection.class));
         }
     }
 
@@ -179,7 +180,8 @@ public class SqlStorage implements Storage {
             for (Map.Entry<SectionType, AbstractSection> e : r.getSections().entrySet()) {
                 ps.setString(1, r.getUuid());
                 ps.setString(2, e.getKey().name());
-                ps.setString(3, writeToSection(e.getKey().name(), e.getValue()));
+                AbstractSection abstractSection = e.getValue();
+                ps.setString(3, JsonParser.write(abstractSection, AbstractSection.class));
                 ps.addBatch();
             }
             ps.executeBatch();

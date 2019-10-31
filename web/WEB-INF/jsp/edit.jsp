@@ -1,7 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ page import="javax.xml.soap.Text" %>
 <%@ page import="main.model.*" %>
-<%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <html>
@@ -39,7 +37,7 @@
                 </c:when>
                 <c:when test="${type == 'ACHIEVEMENT' || type == 'QUALIFICATIONS'}">
                     <textarea name='${type}' cols=60
-                              rows=5><%=((ListSection) sectionValue).getList().toString().replace("[", "").replace("]", "").replace(" ", "\n")%></textarea>
+                              rows=5><%=String.join("\n", ((ListSection) sectionValue).getList()).replace(" ", "\n")%></textarea>
                 </c:when>
                 <c:when test="${type == 'EDUCATION' || type == 'EXPERIENCE'}">
                     <c:forEach var="organization" items="<%=((OrganizationSection) sectionValue).getList()%>">
@@ -81,7 +79,7 @@
         </c:forEach>
         <hr>
         <button type="submit">Сохранить</button>
-        <button onclick="window.history.back()">Отменить</button>
+        <button name="back" type="back" value="back">Отменить</button>
     </form>
 </section>
 <jsp:include page="fragments/footer.jsp"/>

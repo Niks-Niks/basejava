@@ -21,6 +21,7 @@ public class ResumeServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         String uuid = request.getParameter("uuid");
         String fullName = request.getParameter("fullName");
+        String action = request.getParameter("back");
         Resume r;
         boolean createNew = false;
 
@@ -32,55 +33,64 @@ public class ResumeServlet extends HttpServlet {
             r.setFullName(fullName);
         }
 
-        for (ContactType type : ContactType.values()) {
-            String value = request.getParameter(type.name());
-            if (createNew) {
-                r.addContact(type, value);
-            }
-        }
-
-        for (SectionType type : SectionType.values()) {//TODO all
-            String value = request.getParameter(type.name());
-            switch (type) {
-                case OBJECTIVE:
-                case PERSONAL:
-                    if (value != null) {
-                        r.addSection(type, new TextSection(value));
-                    } else r.addSection(type, new TextSection());
-                    break;
-                case QUALIFICATIONS:
-                case ACHIEVEMENT:
-                    List<String> list = new ArrayList<>();
-                    list.add(value);
-                    if (value != null) {
-                        r.addSection(type, new ListSection(list));
-                    } else r.addSection(type, new ListSection());
-                    break;
-                case EXPERIENCE:
-                case EDUCATION:
-                    List<Organization> org = new ArrayList<>();
-                    String title = isEmpty(type.name() + "title", type, request);
-                    String url = isEmpty(type.name() + "url", type, request);
-
-                    String name = isEmpty(type.name() + "name", type, request);
-                    String des = isEmpty(type.name() + "des", type, request);
-                    String dateS = isEmpty(type.name() + "start", type, request);
-                    String dateE = isEmpty(type.name() + "end", type, request);
-                    LocalDate start;
-                    LocalDate end;
-                    try {
-                        start = LocalDate.parse(dateS);
-                        end = LocalDate.parse(dateE);
-                    } catch (Exception e) {
-                        start = LocalDate.now();
-                        end = LocalDate.now();
-                    }
-                    org.add(new Organization(url, title, new Organization.Place(start, end, name, des)));
-
-                    r.addSection(type, new OrganizationSection(org));
-
+        if (action != null) {
+            request.setAttribute("resumes", storage.getAllSorted());
+            request.getRequestDispatcher("/WEB-INF/jsp/list.jsp").forward(request, response);
+            return;
+        } else {
+            for (ContactType type : ContactType.values()) {
+                String value = request.getParameter(type.name());
+                if (isEmpty(value)) {
+                    r.getContacts().remove(type);
+                } else {
+                    r.addContact(type, value);
+                }
             }
 
+            for (SectionType type : SectionType.values()) {//TODO all
+                String value = request.getParameter(type.name());
+                switch (type) {
+                    case OBJECTIVE:
+                    case PERSONAL:
+                        if (value != null) {
+                            r.addSection(type, new TextSection(value));
+                        } else r.getSections().remove(type);
+                        break;
+                    case QUALIFICATIONS:
+                    case ACHIEVEMENT:
+                        List<String> list = new ArrayList<>();
+                        list.add(value);
+                        if (value != null) {
+                            r.addSection(type, new ListSection(list));
+                        } else r.getSections().remove(type);
+                        break;
+                    case EXPERIENCE:
+                    case EDUCATION:
+                        List<Organization> org = new ArrayList<>();
+                        String title = isEmpty(type.name() + "title", r, type, request);
+                        String url = isEmpty(type.name() + "url", r, type, request);
+
+                        String name = isEmpty(type.name() + "name", r, type, request);
+                        String des = isEmpty(type.name() + "des", r, type, request);
+                        String dateS = isEmpty(type.name() + "start", r, type, request);
+                        String dateE = isEmpty(type.name() + "end", r, type, request);
+                        LocalDate start;
+                        LocalDate end;
+                        try {
+                            start = LocalDate.parse(dateS);
+                            end = LocalDate.parse(dateE);
+                        } catch (Exception e) {
+                            start = LocalDate.now();
+                            end = LocalDate.now();
+                        }
+                        org.add(new Organization(url, title, new Organization.Place(start, end, name, des)));
+
+                        r.addSection(type, new OrganizationSection(org));
+
+                }
+
+
+            }
         }
         if (createNew) {
             storage.save(r);
@@ -97,6 +107,7 @@ public class ResumeServlet extends HttpServlet {
 
         String uuid = request.getParameter("uuid");
         String action = request.getParameter("action");
+
         if (action == null) {
             request.setAttribute("resumes", storage.getAllSorted());
             request.getRequestDispatcher("/WEB-INF/jsp/list.jsp").forward(request, response);
@@ -128,7 +139,11 @@ public class ResumeServlet extends HttpServlet {
         request.getRequestDispatcher(action).forward(request, response);
     }
 
-    private String isEmpty(String check, SectionType sectionType, HttpServletRequest request) {
-        return request.getParameter((check == null || check == "") ? sectionType.toString() : check);
+    private String isEmpty(String check, Resume r, SectionType type, HttpServletRequest request) {
+        return request.getParameter((check == null || check == "") ? r.getSections().remove(type).toString() : check);
+    }
+
+    private boolean isEmpty(String check) {
+        return check == null || check == "";
     }
 }
