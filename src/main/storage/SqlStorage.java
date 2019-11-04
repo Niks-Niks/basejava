@@ -1,8 +1,10 @@
 package main.storage;
 
 import main.exception.NotExistStorageException;
-import main.exception.StorageException;
-import main.model.*;
+import main.model.AbstractSection;
+import main.model.ContactType;
+import main.model.Resume;
+import main.model.SectionType;
 import main.sql.SqlHelper;
 import main.util.JsonParser;
 
@@ -10,7 +12,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -201,72 +202,6 @@ public class SqlStorage implements Storage {
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, r.getUuid());
             ps.execute();
-        }
-    }
-
-    private String writeToSection(String sectionType, AbstractSection section) {
-        switch (SectionType.valueOf(sectionType)) {
-            case PERSONAL:
-            case OBJECTIVE:
-                return ((TextSection) section).getText();
-            case ACHIEVEMENT:
-            case QUALIFICATIONS:
-                return String.join("\n", ((ListSection) section).getList());
-            case EXPERIENCE:
-            case EDUCATION:
-                OrganizationSection orgS = (OrganizationSection) section;
-                List<Organization> org = new ArrayList<>();
-                for (Organization O : orgS.getList()) {
-                    List<Organization.Place> place = new ArrayList<>();
-                    String hp = O.getHomePage().getHomePage();
-                    String url = O.getHomePage().getLink();
-                    for (Organization.Place p : O.getList()) {
-                        LocalDate start = p.getDateStart();
-                        LocalDate end = p.getDateEnd();
-                        String title = p.getTitle();
-                        String des = p.getDescription();
-                        place.add(new Organization.Place(start, end, title, des));
-                    }
-                    org.add(new Organization(new Organization.Link(hp, url), place));
-                }
-                return new OrganizationSection(org).toString();
-            default:
-                throw new StorageException("Error in writeToSection");
-        }
-    }
-
-    private AbstractSection readFromSection(SectionType type, String text) {
-        switch (type) {
-            case PERSONAL:
-            case OBJECTIVE:
-                return new TextSection(text);
-            case ACHIEVEMENT:
-            case QUALIFICATIONS:
-                ArrayList<String> list = new ArrayList<>();
-                for (String q : text.split("\n")) {
-                    list.add(q);
-                }
-                return new ListSection(list);
-            case EDUCATION:
-            case EXPERIENCE:
-                String link = text.substring(text.indexOf("link->") + 6, text.indexOf("), ") + 1);
-                String Link_title = link.substring(2, link.indexOf(","));
-                String Link_url = link.substring(link.indexOf(",") + 2, link.length() - 2);
-                ArrayList<Organization.Place> listPlace = new ArrayList<>();
-                for (int i = 0; i < text.length(); i++) {
-                    if (text.contains("Place")) {
-                        text = text.substring(text.indexOf("Place"));
-                        String Place_dateS = text.substring(text.indexOf("dateStart") + 10, text.indexOf(", "));
-                        String Place_dateE = text.substring(text.indexOf("dateEnd") + 8, text.indexOf(", t"));
-                        String Place_title = text.substring(text.indexOf("title=") + 7, text.indexOf(", des") - 1);
-                        String Place_des = text.substring(text.indexOf("description=") + 13, text.indexOf("'}"));
-                        listPlace.add(new Organization.Place(LocalDate.parse(Place_dateS), LocalDate.parse(Place_dateE), Place_title, Place_des));
-                        text = text.substring(10);
-                    }
-                }
-                return new OrganizationSection(new Organization(Link_url, Link_title, listPlace));
-            default:
-                throw new StorageException("Error in writeToSection");
         }
     }
 }
