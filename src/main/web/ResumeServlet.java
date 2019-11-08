@@ -3,6 +3,7 @@ package main.web;
 import main.Config;
 import main.model.*;
 import main.storage.Storage;
+import main.util.DateUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ResumeServlet extends HttpServlet {
@@ -21,7 +23,7 @@ public class ResumeServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         String uuid = request.getParameter("uuid");
         String fullName = request.getParameter("fullName");
-        String action = request.getParameter("back");
+
         Resume r;
         boolean createNew = false;
 
@@ -33,57 +35,53 @@ public class ResumeServlet extends HttpServlet {
             r.setFullName(fullName);
         }
 
-        if (action != null) {
-            request.setAttribute("resumes", storage.getAllSorted());
-            request.getRequestDispatcher("/WEB-INF/jsp/list.jsp").forward(request, response);
-            return;
-        } else {
-            for (ContactType type : ContactType.values()) {
-                String value = request.getParameter(type.name());
-                if (isEmpty(value)) {
-                    r.getContacts().remove(type);
-                } else {
-                    r.addContact(type, value);
-                }
+        for (ContactType type : ContactType.values()) {
+            String value = request.getParameter(type.name());
+            if (isEmpty(value)) {
+                r.getContacts().remove(type);
+            } else {
+                r.addContact(type, value);
             }
-            for (SectionType type : SectionType.values()) {//TODO all
-                String value = request.getParameter(type.name());
-                if (isEmpty(value)) {
-                    r.getSections().remove(type);
-                } else {
-                    switch (type) {
-                        case OBJECTIVE:
-                        case PERSONAL:
-                            r.addSection(type, new TextSection(value));
-                            break;
-                        case QUALIFICATIONS:
-                        case ACHIEVEMENT:
-                            r.addSection(type, new ListSection(value));
-                            break;
-                        case EXPERIENCE:
-                        case EDUCATION:
-                            List<Organization> org = new ArrayList<>();
-                            String title = isEmpty(type.name() + "title", r, type, request);
-                            String url = isEmpty(type.name() + "url", r, type, request);
-
-                            String name = isEmpty(type.name() + "name", r, type, request);
-                            String des = isEmpty(type.name() + "des", r, type, request);
-                            String dateS = isEmpty(type.name() + "start", r, type, request);
-                            String dateE = isEmpty(type.name() + "end", r, type, request);
-                            LocalDate start;
-                            LocalDate end;
-                            try {
-                                start = LocalDate.parse(dateS);
-                                end = LocalDate.parse(dateE);
-                            } catch (Exception e) {
-                                start = LocalDate.now();
-                                end = LocalDate.now();
-                            }
-                            org.add(new Organization(url, title, new Organization.Place(start, end, name, des)));
-
-                            r.addSection(type, new OrganizationSection(org));
+        }
+        for (SectionType type : SectionType.values()) {//TODO all
+            String value = request.getParameter(type.name());
+            switch (type) {
+                case OBJECTIVE:
+                case PERSONAL:
+                    if (!isEmpty(value)) {
+                        r.addSection(type, new TextSection(value));
+                    } else {
+                        r.getSections().remove(type);
                     }
-                }
+                    break;
+                case QUALIFICATIONS:
+                case ACHIEVEMENT:
+                    if (!isEmpty(value)) {
+                        r.addSection(type, new ListSection(Arrays.asList(value.split("\n"))));
+                    } else {
+                        r.getSections().remove(type);
+                    }
+                    break;
+                case EXPERIENCE:
+                case EDUCATION:
+                    if (isEmptyArray(new String[]{type.name() + "title", type.name() + "url", type.name() + "start", type.name() + "end", type.name() + "name", type.name() + "des"})) {// true == all array-> empty
+                        List<Organization> org = new ArrayList<>();
+
+                        String title = request.getParameter(type.name() + "title");
+                        String url = request.getParameter(type.name() + "url");
+
+                        LocalDate dateS = DateUtil.parse(request.getParameter(type.name() + "start"));
+                        LocalDate dateE = DateUtil.parse(request.getParameter(type.name() + "end"));
+                        String name = request.getParameter(type.name() + "name");
+                        String des = request.getParameter(type.name() + "des");
+
+                        org.add(new Organization(url, title, new Organization.Place(dateS, dateE, name, des)));
+
+                        r.addSection(type, new OrganizationSection(org));
+                    } else {
+                        r.getSections().remove(type);
+                    }
+                    break;
             }
         }
 
@@ -140,33 +138,22 @@ public class ResumeServlet extends HttpServlet {
                         case EXPERIENCE:
                         case EDUCATION:
                             OrganizationSection organizationSection = (OrganizationSection) section;
+                            List<Organization> orgList = new ArrayList<>();
                             if (organizationSection != null) {
-
-                                List<Organization> org = new ArrayList<>();
-                                String title = isEmpty(type.name() + "title", r, type, request);
-                                String url = isEmpty(type.name() + "url", r, type, request);
-
-                                String name = isEmpty(type.name() + "name", r, type, request);
-                                String des = isEmpty(type.name() + "des", r, type, request);
-                                String dateS = isEmpty(type.name() + "start", r, type, request);
-                                String dateE = isEmpty(type.name() + "end", r, type, request);
-                                LocalDate start;
-                                LocalDate end;
-
-                                try {
-                                    start = LocalDate.parse(dateS);
-                                    end = LocalDate.parse(dateE);
-                                } catch (Exception e) {
-                                    start = LocalDate.now();
-                                    end = LocalDate.now();
+                                for (Organization org : organizationSection.getList()) {
+                                    for (Organization.Place place : org.getList()) {
+                                        orgList.add(new Organization(org.getHomePage().getHomePage(), org.getHomePage().getLink(),
+                                                new Organization.Place(place.getDateStart(), place.getDateEnd(), place.getTitle(), place.getDescription())));
+                                    }
                                 }
-                                org.add(new Organization(url, title, new Organization.Place(start, end, name, des)));
-
-                                section = new OrganizationSection(org);
                             } else {
-                                section = new OrganizationSection(new Organization("", "", new Organization.Place(LocalDate.now(), LocalDate.now(), "", "")));
+                                List<Organization.Place> place = new ArrayList<>();
+                                place.add(new Organization.Place());
+                                orgList.add(new Organization(new Organization.Link(), place));
                             }
+                            section = new OrganizationSection(orgList);
 
+                            break;
                     }
                     r.addSection(type, section);
                 }
@@ -183,12 +170,20 @@ public class ResumeServlet extends HttpServlet {
         request.getRequestDispatcher(action).forward(request, response);
     }
 
-    private String isEmpty(String check, Resume r, SectionType type, HttpServletRequest request) {
-        return request.getParameter(isEmpty(check) ? r.getSections().remove(type).toString() : check);
+    private boolean isEmptyArray(String[] check) {
+        boolean isEmpty = true;
+        for (String q : check) {
+            isEmpty = isEmpty(q);
+            if (!isEmpty) {
+                isEmpty = false;
+                break;
+            }
+        }
+        return isEmpty;
     }
 
     private boolean isEmpty(String check) {
-        return check == null || check == "" || check.trim().length() == 0;
+        return check == null || check.equals("") || check.trim().length() == 0;
     }
 
 }

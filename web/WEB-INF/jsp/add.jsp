@@ -58,11 +58,11 @@
                     </dl>
                     <dl>
                         <dt>Дата начала:</dt>
-                        <dd><input type="text" name="${type}start" size="40"/></dd>
+                        <dd><input type="text" name="${type}start" size="40" placeholder="yyyy/mm/dd"/></dd>
                     </dl>
                     <dl>
                         <dt>Конечная дата:</dt>
-                        <dd><input type="text" name="${type}end" size="40"/></dd>
+                        <dd><input type="text" name="${type}end" size="40" placeholder="yyyy/mm/dd"/></dd>
                     </dl>
                     <dl>
                         <dt>Должность:</dt>

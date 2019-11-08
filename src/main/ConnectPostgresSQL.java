@@ -1,6 +1,8 @@
 package main;
 
 import java.sql.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class ConnectPostgresSQL {
     private static final String USER = "postgres";
@@ -12,6 +14,10 @@ public class ConnectPostgresSQL {
     private static ResultSet rs = null;
 
     public static void main(String[] args) {
+//        checkConnect();
+    }
+
+    private static void checkConnect() {
         System.out.println("Start to connect... ");
 
         try {

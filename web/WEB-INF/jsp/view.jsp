@@ -40,7 +40,7 @@
     <c:when test="${type == 'ACHIEVEMENT' || type == 'QUALIFICATIONS'}">
         <dl>
             <dt><h2>${type.title}</h2></dt>
-            <dd><%=((ListSection) sectionValue).getList()%>
+            <dd><%=String.join("\n", ((ListSection) sectionValue).getList())%>
             </dd>
         </dl>
     </c:when>

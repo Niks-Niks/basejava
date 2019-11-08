@@ -78,7 +78,7 @@ public class Organization implements Serializable {
         public Link() {
         }
 
-        public Link(String link, String homePage) {
+        public Link(String homePage, String link) {
             this.link = link;
             this.homePage = homePage;
         }

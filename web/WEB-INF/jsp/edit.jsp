@@ -59,7 +59,7 @@
                                 </dd>
                             </dl>
                             <dl>
-                                <dt>Конечная дата:</dt>
+                                <dt>Конечная дата:</dt> 
                                 <dd><input type="text" name="${type}end" size="40" value="<%=place.getDateEnd()%>"/>
                                 </dd>
                             </dl>

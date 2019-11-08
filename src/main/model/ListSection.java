@@ -28,9 +28,7 @@ public class ListSection extends AbstractSection implements Serializable {
 
     @Override
     public String toString() {
-        return "ListSection{" +
-                "list=" + list +
-                '}';
+        return list.toString();
     }
 
     @Override
