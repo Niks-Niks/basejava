@@ -32,7 +32,7 @@
         <c:choose>
         <c:when test="${type == 'PERSONAL' || type == 'OBJECTIVE'}">
     <dl>
-    <dt><h2>${type.title}</h2></dt>
+        <dt><h2>${type.title}</h2></dt>
         <dd><%=((TextSection) sectionValue).getText()%>
         </dd>
     </dl>

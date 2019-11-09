@@ -118,6 +118,9 @@ public class ResumeServlet extends HttpServlet {
                 response.sendRedirect("resume");
                 return;
             case "view":
+                r = storage.get(uuid);
+                getRequestDispatcher(request, response, r, "/WEB-INF/jsp/view.jsp");
+                break;
             case "edit":
                 r = storage.get(uuid);
                 for (SectionType type : SectionType.values()) {//TODO all
@@ -148,16 +151,17 @@ public class ResumeServlet extends HttpServlet {
                                 }
                             } else {
                                 List<Organization.Place> place = new ArrayList<>();
-                                place.add(new Organization.Place());
+                                place.add(new Organization.Place(LocalDate.now(), LocalDate.now(), "", ""));
                                 orgList.add(new Organization(new Organization.Link(), place));
                             }
+
                             section = new OrganizationSection(orgList);
 
                             break;
                     }
                     r.addSection(type, section);
                 }
-                getRequestDispatcher(request, response, r, ("view".equals(action) ? "/WEB-INF/jsp/view.jsp" : "/WEB-INF/jsp/edit.jsp"));
+                getRequestDispatcher(request, response, r, "/WEB-INF/jsp/edit.jsp");
                 break;
             default:
                 throw new IllegalArgumentException("Action " + action + " is illegal");

@@ -20,6 +20,7 @@ import static main.util.DateUtil.of;
 public class Organization implements Serializable {
 
     private List<Place> list = new ArrayList<>();
+    private Place place;
     private Link homePage;
 
     private static final long serialVersionUID = 1L;
@@ -40,6 +41,11 @@ public class Organization implements Serializable {
     public Organization(String name, String url, List<Place> list) {
         this.homePage = new Link(name, url);
         this.list = list;
+    }
+
+    public Organization(Link link, Place place) {
+        this.place = place;
+        homePage = link;
     }
 
     public List<Place> getList() {
@@ -76,6 +82,7 @@ public class Organization implements Serializable {
         private String homePage;
 
         public Link() {
+
         }
 
         public Link(String homePage, String link) {
